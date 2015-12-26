@@ -46,20 +46,16 @@ public class AlgorithmFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_algorithm, container, false);
         getActivity().getActionBar().setTitle(algorithm.getTitle());
 
-        WebView wv = (WebView) rootView.findViewById(R.id.webView);
+        TextView t = (TextView) rootView.findViewById(R.id.textView);
+        t.setText(algorithm.getHtml());
 
-        wv.getSettings().setJavaScriptEnabled(true);
-        wv.loadDataWithBaseURL(null, processHtml(algorithm.getHtml()), "text/html",
-                "utf-8", null);
+        //WebView wv = (WebView) rootView.findViewById(R.id.webView);
+
+        //wv.getSettings().setJavaScriptEnabled(true);
+        //wv.loadDataWithBaseURL(null, algorithm.getHtml(), "text/html",
+        //        "utf-8", null);
 
         return rootView;
-    }
-
-    private String processHtml(String html) {
-        Document doc = Jsoup.parse(html);
-        Elements els = doc.select("#contents-table");
-        els.remove();
-        return doc.html();
     }
 
     private static String TAG = "AlgorithmFragment.java";

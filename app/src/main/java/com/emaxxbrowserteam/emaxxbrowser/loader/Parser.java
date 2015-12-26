@@ -1,5 +1,6 @@
 package com.emaxxbrowserteam.emaxxbrowser.loader;
 
+import com.emaxxbrowserteam.emaxxbrowser.MainActivity;
 import com.emaxxbrowserteam.emaxxbrowser.model.Algorithm;
 import com.emaxxbrowserteam.emaxxbrowser.model.SuperTopic;
 import com.emaxxbrowserteam.emaxxbrowser.model.Topic;
@@ -15,7 +16,7 @@ public class Parser {
 
     public static final String E_MAXX_ALGO_URL = "http://e-maxx.ru/algo";
 
-    public static List<SuperTopic> parse(Document document) {
+    public static List<SuperTopic> parse(MainActivity activity, Document document) {
         List<SuperTopic> superTopics = new ArrayList<>();
         Elements elements = document.getElementsByClass("content").get(0).children();
         for (int id = 0; id < elements.size();) {
@@ -37,7 +38,7 @@ public class Parser {
                     }
                     Elements algos = elements.get(id++).children();
                     for (Element algo : algos) {
-                        curTopic.add(new Algorithm(normalize(algo.text()), document.baseUri() + algo.childNode(0).attr("href")));
+                        curTopic.add(new Algorithm(activity, normalize(algo.text()), document.baseUri() + algo.childNode(0).attr("href")));
                     }
                     superTopic.add(curTopic);
                 }

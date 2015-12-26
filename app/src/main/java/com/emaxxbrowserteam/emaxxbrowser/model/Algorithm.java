@@ -3,6 +3,14 @@ package com.emaxxbrowserteam.emaxxbrowser.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.emaxxbrowserteam.emaxxbrowser.MainActivity;
+import com.emaxxbrowserteam.emaxxbrowser.loader.DownloadTask;
+import com.emaxxbrowserteam.emaxxbrowser.loader.IListener;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
 public class Algorithm implements Parcelable {
     private String title;
     private String html;
@@ -11,9 +19,21 @@ public class Algorithm implements Parcelable {
         return title;
     }
 
-    public Algorithm(String title, String html) {
+    public Algorithm(MainActivity activity, String title, String url) {
         this.title = title;
-        this.html = html;
+
+        DownloadTask task = new DownloadTask(activity, new IListener() {
+            @Override
+            public void listen(Document document) {
+                Algorithm.this.html = decorateHtml(document);
+            }
+        });
+    }
+
+    private String decorateHtml(Document doc) {
+        //Elements els = doc.select("#contents-table");
+        //els.remove();
+        return doc.outerHtml();
     }
 
     public String getHtml() {
@@ -39,7 +59,8 @@ public class Algorithm implements Parcelable {
     }
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Algorithm> CREATOR = new Parcelable.Creator<Algorithm>() {
+    public static final Parcelable.Creator<Algorithm> CREATOR = new Parcelable
+            .Creator<Algorithm>() {
         @Override
         public Algorithm createFromParcel(Parcel in) {
             return new Algorithm(in);

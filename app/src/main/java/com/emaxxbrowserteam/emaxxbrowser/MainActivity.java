@@ -24,18 +24,20 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.Toast;
 
 import com.emaxxbrowserteam.emaxxbrowser.loader.DownloadTask;
+import com.emaxxbrowserteam.emaxxbrowser.loader.IListener;
 import com.emaxxbrowserteam.emaxxbrowser.loader.Parser;
-import com.emaxxbrowserteam.emaxxbrowser.loader.listen.SuperTopicListener;
 import com.emaxxbrowserteam.emaxxbrowser.model.Algorithm;
 import com.emaxxbrowserteam.emaxxbrowser.model.SuperTopic;
 import com.emaxxbrowserteam.emaxxbrowser.model.Topic;
+
+import org.jsoup.nodes.Document;
 
 public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     private ExpandableListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
-    private DownloadTask<SuperTopicListener> superTopicTask;
+    private DownloadTask superTopicTask;
 
     public static Handler handler;
     public static ProgressDialog pd;
@@ -85,7 +87,12 @@ public class MainActivity extends Activity {
 
         if (savedInstanceState == null) {
             showWelcomeFragment();
-            superTopicTask = new DownloadTask<>(new SuperTopicListener(this));
+            superTopicTask = new DownloadTask(this, new IListener() {
+                @Override
+                public void listen(Document document) {
+                    updateSuperTopics(Parser.parse(MainActivity.this, document));
+                }
+            });
             superTopicTask.execute(getURL(Parser.E_MAXX_ALGO_URL));
         } else {
             //TODO: saving superTopicTask
@@ -102,20 +109,21 @@ public class MainActivity extends Activity {
     }
 
     private static List<SuperTopic> fetchSuperTopics() {
-        List<SuperTopic> res = new ArrayList<>();
-        List<Algorithm> alg = new ArrayList<>();
-        alg.add(new Algorithm("Algorithm 0", "url"));
-        alg.add(new Algorithm("Algorithm 1", "url"));
-        alg.add(new Algorithm("Algorithm 2", "url"));
-        List<Topic> temp = new ArrayList<>();
-        temp.add(new Topic("Topic 0", alg));
-        temp.add(new Topic("Topic 1", alg));
-        res.add(new SuperTopic("SuperTopic 1", temp));
-        res.add(new SuperTopic("SuperTopic 2", temp));
-        return res;
+//        List<SuperTopic> res = new ArrayList<>();
+//        List<Algorithm> alg = new ArrayList<>();
+//        alg.add(new Algorithm("Algorithm 0", "url"));
+//        alg.add(new Algorithm("Algorithm 1", "url"));
+//        alg.add(new Algorithm("Algorithm 2", "url"));
+//        List<Topic> temp = new ArrayList<>();
+//        temp.add(new Topic("Topic 0", alg));
+//        temp.add(new Topic("Topic 1", alg));
+//        res.add(new SuperTopic("SuperTopic 1", temp));
+//        res.add(new SuperTopic("SuperTopic 2", temp));
+//        return res;
+        return null;
     }
 
-    public void updateSuperTopics(List<SuperTopic> groups) {
+    private void updateSuperTopics(List<SuperTopic> groups) {
         Log.d(TAG, "finished fetching groups");
         ExpandableListAdapter adapter = new CoolAdapter(getApplicationContext(), groups);
         Log.d(TAG, "finished creating adapter groups");
