@@ -17,6 +17,7 @@ import java.util.List;
 public class Parser {
 
     public static final String E_MAXX_ALGO_URL = "http://e-maxx.ru/algo";
+    public static final String E_MAXX_URL = "http://e-maxx.ru";
 
     public static List<SuperTopic> parse(MainActivity activity, Document document) {
         List<SuperTopic> superTopics = new ArrayList<>();

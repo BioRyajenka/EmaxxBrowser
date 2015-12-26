@@ -40,7 +40,7 @@ public class DownloadTask extends AsyncTask<URL, Void, Document> {
             return document;
         }
         Log.e(TAG, "start downloading");
-        document = FileUtils.downloadHtmlAndSave(url, savedPage);
+        document = FileUtils.downloadHtmlAndSave(cacheDir, url, savedPage);
         Log.e(TAG, "downloaded");
         return document;
     }
