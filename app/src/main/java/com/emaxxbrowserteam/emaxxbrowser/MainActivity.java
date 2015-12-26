@@ -48,8 +48,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         pd = new ProgressDialog(this);
-        pd.setTitle("Title");
-        pd.setMessage("Message");
+        pd.setTitle("First time loading");
+        pd.setMessage("Please be patient");
         pd.setCancelable(false);
         pd.setCanceledOnTouchOutside(false);
 

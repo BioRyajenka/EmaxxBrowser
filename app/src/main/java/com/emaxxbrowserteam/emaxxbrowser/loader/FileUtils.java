@@ -77,16 +77,12 @@ public final class FileUtils {
         for (Element imageElement : imageElements) {
             String attr = imageElement.attr("src");
             String link = Parser.E_MAXX_URL + attr.substring(2);
-            Log.e(TAG, "    " + link);
+//            Log.e(TAG, "    " + link);
             String cacheFileName = link.substring(link.lastIndexOf('/') + 1).replace(".png", "");
-//            Log.e(TAG, "dir = " + cacheDir.getAbsolutePath() + ", " + (cacheDir.exists() ? "Exists" : "Not exists"));
             File cacheFile = new File(cacheDir, cacheFileName);
-//            Log.e(TAG, "file = " + cacheFile.getAbsolutePath() + ", " + (cacheFile.exists() ? "Exists" : "Not exists"));
             if (!cacheFile.exists()) {
                 try {
-//                    Log.e(TAG, "    create file " + cacheFile.getName());
                     cacheFile.createNewFile();
-//                    Log.e(TAG, "    created file " + cacheFile.getName() + ", " + (created ? "created" : "not created"));
                 } catch (IOException e) {
                     Log.e(TAG, "    failed to create file: " + e.toString());
                 }
@@ -98,11 +94,13 @@ public final class FileUtils {
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     InputStream inputStream = connection.getInputStream();
                     inputStream2file(cacheFile, inputStream);
-                    imageElement.attr(cacheFile.getAbsolutePath());
+                    imageElement.attr("src", cacheFile.getAbsolutePath());
+//                    imageElement.attr("alt", "HUI");
+//                    Log.e(TAG, "new attr = " + imageElement.attr("src"));
                 } catch (IOException ignored) {}
             }
         }
-        
+
         writeDocument(file, text.outerHtml());
     }
 
