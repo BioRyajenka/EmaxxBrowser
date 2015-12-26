@@ -31,9 +31,9 @@ public class DownloadTask extends AsyncTask<URL, Void, Document> {
         Log.e(TAG, "name = " + name);
         File cacheDir = activity.getCacheDir();
         File savedPage = new File(cacheDir, name);
-        if (savedPage.exists()) {
-            savedPage.delete();
-        }
+//        if (savedPage.exists()) {
+//            savedPage.delete();
+//        }
         if (savedPage.exists() && savedPage.canRead()) {
             Log.e(TAG, "read from cache");
             document = FileUtils.readHtml(savedPage, url.toString());

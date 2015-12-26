@@ -75,31 +75,34 @@ public final class FileUtils {
         Log.e(TAG, "write document");
         Elements imageElements = text.getElementsByClass("tex");
         for (Element imageElement : imageElements) {
-            String link = Parser.E_MAXX_URL + imageElement.attr("src").substring(2);
+            String attr = imageElement.attr("src");
+            String link = Parser.E_MAXX_URL + attr.substring(2);
             Log.e(TAG, "    " + link);
             String cacheFileName = link.substring(link.lastIndexOf('/') + 1).replace(".png", "");
-            Log.e(TAG, "dir = " + cacheDir.getAbsolutePath() + ", " + (cacheDir.exists() ? "Exists" : "Not exists"));
+//            Log.e(TAG, "dir = " + cacheDir.getAbsolutePath() + ", " + (cacheDir.exists() ? "Exists" : "Not exists"));
             File cacheFile = new File(cacheDir, cacheFileName);
-            Log.e(TAG, "file = " + cacheFile.getAbsolutePath() + ", " + (cacheFile.exists() ? "Exists" : "Not exists"));
+//            Log.e(TAG, "file = " + cacheFile.getAbsolutePath() + ", " + (cacheFile.exists() ? "Exists" : "Not exists"));
             if (!cacheFile.exists()) {
                 try {
-                    Log.e(TAG, "    create file " + cacheFile.getName());
-                    boolean created = cacheFile.createNewFile();
-                    Log.e(TAG, "    created file " + cacheFile.getName() + ", " + (created ? "created" : "not created"));
+//                    Log.e(TAG, "    create file " + cacheFile.getName());
+                    cacheFile.createNewFile();
+//                    Log.e(TAG, "    created file " + cacheFile.getName() + ", " + (created ? "created" : "not created"));
                 } catch (IOException e) {
                     Log.e(TAG, "    failed to create file: " + e.toString());
                 }
             }
             if (cacheFile.exists() && cacheFile.canWrite()) {
-                Log.e(TAG, "    file exists " + cacheFile.getName());
+//                Log.e(TAG, "    file exists " + cacheFile.getName());
                 URL url = getURL(link);
                 try {
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     InputStream inputStream = connection.getInputStream();
                     inputStream2file(cacheFile, inputStream);
+                    imageElement.attr(cacheFile.getAbsolutePath());
                 } catch (IOException ignored) {}
             }
         }
+        
         writeDocument(file, text.outerHtml());
     }
 
