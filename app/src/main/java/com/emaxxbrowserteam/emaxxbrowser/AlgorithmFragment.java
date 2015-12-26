@@ -70,6 +70,7 @@ public class AlgorithmFragment extends Fragment {
         wv.getSettings().setAllowFileAccess(true);
         wv.getSettings().setJavaScriptEnabled(true);
         wv.getSettings().setBuiltInZoomControls(true);
+        wv.setBackgroundColor(Color.argb(255, 233, 233, 233));
 
         algorithm.loadHtml(new IListener() {
             @Override
