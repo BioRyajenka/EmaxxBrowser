@@ -27,7 +27,6 @@ import com.emaxxbrowserteam.emaxxbrowser.loader.DownloadTask;
 import com.emaxxbrowserteam.emaxxbrowser.loader.FileUtils;
 import com.emaxxbrowserteam.emaxxbrowser.loader.IListener;
 import com.emaxxbrowserteam.emaxxbrowser.loader.Parser;
-import com.emaxxbrowserteam.emaxxbrowser.model.Algorithm;
 import com.emaxxbrowserteam.emaxxbrowser.model.SuperTopic;
 import com.emaxxbrowserteam.emaxxbrowser.model.Topic;
 

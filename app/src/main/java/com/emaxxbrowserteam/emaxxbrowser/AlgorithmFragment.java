@@ -11,6 +11,7 @@ import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.emaxxbrowserteam.emaxxbrowser.loader.IListener;
 import com.emaxxbrowserteam.emaxxbrowser.model.Algorithm;
 
 import org.jsoup.Jsoup;
@@ -36,6 +37,12 @@ public class AlgorithmFragment extends Fragment {
         return myFragment;
     }
 
+    private String decorateHtml(Document doc) {
+        //Elements els = doc.select("#contents-table");
+        //els.remove();
+        return doc.outerHtml();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
@@ -46,8 +53,15 @@ public class AlgorithmFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_algorithm, container, false);
         getActivity().getActionBar().setTitle(algorithm.getTitle());
 
-        TextView t = (TextView) rootView.findViewById(R.id.textView);
-        t.setText(algorithm.getHtml());
+        final TextView t = (TextView) rootView.findViewById(R.id.textView);
+//        t.setText(algorithm.getHtml());
+
+        algorithm.loadHtml(new IListener() {
+            @Override
+            public void listen(Document document) {
+                t.setText(decorateHtml(document));
+            }
+        });
 
         //WebView wv = (WebView) rootView.findViewById(R.id.webView);
 

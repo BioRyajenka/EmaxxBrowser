@@ -20,7 +20,11 @@ public class Parser {
 
     public static List<SuperTopic> parse(MainActivity activity, Document document) {
         List<SuperTopic> superTopics = new ArrayList<>();
-        Elements elements = document.getElementsByClass("content").get(0).children();
+        Elements elements = document.getElementsByClass("content");
+        if (elements.isEmpty()) {
+            return superTopics;
+        }
+        elements = elements.first().children();
         for (int id = 0; id < elements.size(); ) {
             Element superThemeElement = elements.get(id++);
             if (superThemeElement.tagName().equals("h2")) {

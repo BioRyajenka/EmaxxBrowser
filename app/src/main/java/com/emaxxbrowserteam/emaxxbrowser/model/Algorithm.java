@@ -14,41 +14,30 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 public class Algorithm implements Parcelable {
+
+    private MainActivity activity;
+    private String url;
     private String title;
-    private String html;
 
     public String getTitle() {
         return title;
     }
 
     public Algorithm(MainActivity activity, String title, String url) {
+        this.activity = activity;
         this.title = title;
+        this.url = url;
+    }
 
-        DownloadTask task = new DownloadTask(activity, new IListener() {
-            @Override
-            public void listen(Document document) {
-                Algorithm.this.html = decorateHtml(document);
-            }
-        });
-        //Log.d(TAG, );
+    public void loadHtml(IListener listener) {
+        DownloadTask task = new DownloadTask(activity, listener);
         task.execute(FileUtils.getURL(url));
-    }
-
-    private String decorateHtml(Document doc) {
-        //Elements els = doc.select("#contents-table");
-        //els.remove();
-        return doc.outerHtml();
-    }
-
-    public String getHtml() {
-        return html;
     }
 
     //-----======++++++Parsel part++++++======-----
 
     protected Algorithm(Parcel in) {
         title = in.readString();
-        html = in.readString();
     }
 
     @Override
@@ -59,7 +48,6 @@ public class Algorithm implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
-        dest.writeString(html);
     }
 
     @SuppressWarnings("unused")
