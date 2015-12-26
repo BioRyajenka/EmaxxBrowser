@@ -4,7 +4,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.LogRecord;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -13,8 +12,6 @@ import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -28,6 +25,7 @@ import android.widget.Toast;
 
 import com.emaxxbrowserteam.emaxxbrowser.loader.DownloadTask;
 import com.emaxxbrowserteam.emaxxbrowser.loader.Parser;
+import com.emaxxbrowserteam.emaxxbrowser.loader.listen.SuperTopicListener;
 import com.emaxxbrowserteam.emaxxbrowser.model.Algorithm;
 import com.emaxxbrowserteam.emaxxbrowser.model.SuperTopic;
 import com.emaxxbrowserteam.emaxxbrowser.model.Topic;
@@ -37,7 +35,7 @@ public class MainActivity extends Activity {
     private ExpandableListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
-    private DownloadTask task;
+    private DownloadTask<SuperTopicListener> superTopicTask;
 
     public static Handler handler;
     public static ProgressDialog pd;
@@ -87,10 +85,10 @@ public class MainActivity extends Activity {
 
         if (savedInstanceState == null) {
             showWelcomeFragment();
-            task = new DownloadTask(this);
-            task.execute(getURL(Parser.E_MAXX_ALGO_URL));
+            superTopicTask = new DownloadTask<>(new SuperTopicListener(this));
+            superTopicTask.execute(getURL(Parser.E_MAXX_ALGO_URL));
         } else {
-            //TODO: saving task
+            //TODO: saving superTopicTask
         }
     }
 
