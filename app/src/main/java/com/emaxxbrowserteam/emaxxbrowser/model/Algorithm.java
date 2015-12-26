@@ -4,9 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Algorithm implements Parcelable {
-
     private String title;
-    private String url;
+    private String html;
 
     public String getTitle() {
         return title;
@@ -14,18 +13,18 @@ public class Algorithm implements Parcelable {
 
     public Algorithm(String title, String html) {
         this.title = title;
-        this.url = html;
+        this.html = html;
     }
 
-    public String getUrl() {
-        return url;
+    public String getHtml() {
+        return html;
     }
 
     //-----======++++++Parsel part++++++======-----
 
     protected Algorithm(Parcel in) {
         title = in.readString();
-        url = in.readString();
+        html = in.readString();
     }
 
     @Override
@@ -36,7 +35,7 @@ public class Algorithm implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
-        dest.writeString(url);
+        dest.writeString(html);
     }
 
     @SuppressWarnings("unused")

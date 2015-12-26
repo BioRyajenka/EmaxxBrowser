@@ -40,7 +40,7 @@ public class TopicFragment extends Fragment {
         Topic topic = getArguments().getParcelable("topic");
         Log.d(TAG, "ocv: topic is " + topic);
 
-        View rootView = inflater.inflate(R.layout.fragment_theme, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_algorithm, container, false);
 
         LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.themeLinearLayout);
         TextView textView = (TextView) rootView.findViewById(R.id.textLabel);

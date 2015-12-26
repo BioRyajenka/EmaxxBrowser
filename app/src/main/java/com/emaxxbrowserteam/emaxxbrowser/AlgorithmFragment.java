@@ -7,10 +7,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.emaxxbrowserteam.emaxxbrowser.model.Algorithm;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 /**
  * Created by Jackson on 26.12.2015.
@@ -37,14 +43,23 @@ public class AlgorithmFragment extends Fragment {
         Algorithm algorithm = getArguments().getParcelable("algorithm");
         Log.d(TAG, "ocv: algorithm is " + algorithm);
 
-        View rootView = inflater.inflate(R.layout.fragment_topic, container, false);
-
-        LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.topicLinearLayout);
-        TextView textView = (TextView) rootView.findViewById(R.id.textLabel);
-        textView.setText(algorithm.getTitle() + " desc");
+        View rootView = inflater.inflate(R.layout.fragment_algorithm, container, false);
         getActivity().getActionBar().setTitle(algorithm.getTitle());
 
+        WebView wv = (WebView) rootView.findViewById(R.id.webView);
+
+        wv.getSettings().setJavaScriptEnabled(true);
+        wv.loadDataWithBaseURL(null, processHtml(algorithm.getHtml()), "text/html",
+                "utf-8", null);
+
         return rootView;
+    }
+
+    private String processHtml(String html) {
+        Document doc = Jsoup.parse(html);
+        Elements els = doc.select("#contents-table");
+        els.remove();
+        return doc.html();
     }
 
     private static String TAG = "AlgorithmFragment.java";
