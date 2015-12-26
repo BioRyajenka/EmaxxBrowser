@@ -66,16 +66,5 @@ public class DownloadTask extends AsyncTask<URL, Void, Document> {
         sendMessage(1);
     }
 
-    private Document downloadHtml(URL url) {
-        HttpConnection connection = null;
-        try {
-            connection = (HttpConnection) Jsoup.connect(url.toString());
-            return document = connection.get();
-        } catch (IOException e) {
-            Log.e(TAG, e.toString(), e);
-            return document = null;
-        }
-    }
-
     public static final String TAG = "DownloadTask";
 }
