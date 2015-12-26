@@ -55,16 +55,17 @@ public final class FileUtils {
 
     public static void inputStream2file(File file, InputStream inputStream) {
         Log.e(TAG, "input stream to file " + file.getName());
-        OutputStreamWriter writer;
+        Log.e(TAG, "dir = " + file.getAbsolutePath());
+        FileOutputStream writer;
         try {
-            writer = new OutputStreamWriter(new FileOutputStream(file),
-                    "cp1251");
+            writer = new FileOutputStream(file);
             byte[] buffer = new byte[1024 * 40];
             int len = 0;
             while ((len = inputStream.read(buffer, 0, buffer.length)) >= 0) {
-                for (int i = 0; i < len; i++) {
-                    writer.write(buffer[i]);
-                }
+//                for (int i = 0; i < len; i++) {
+//                    writer.write(buffer[i]);
+//                }
+                writer.write(buffer, 0, len);
             }
         } catch (IOException e) {
             Log.e(TAG, e.toString(), e);
@@ -94,13 +95,11 @@ public final class FileUtils {
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     InputStream inputStream = connection.getInputStream();
                     inputStream2file(cacheFile, inputStream);
-                    imageElement.attr("src", cacheFile.getAbsolutePath());
-//                    imageElement.attr("alt", "HUI");
+                    imageElement.attr("src", "file://" + cacheFile.getAbsolutePath());
 //                    Log.e(TAG, "new attr = " + imageElement.attr("src"));
                 } catch (IOException ignored) {}
             }
         }
-
         writeDocument(file, text.outerHtml());
     }
 
@@ -160,5 +159,11 @@ public final class FileUtils {
     private static final String TAG = "FileUtils";
 
     private FileUtils() {
+    }
+
+    public static void clearCache(File cacheDir) {
+        for (File file : cacheDir.listFiles()) {
+            file.delete();
+        }
     }
 }
