@@ -4,3 +4,4 @@
 2) settings -> reload all <br>
 3) reload page <br>
 4) отображать время сохранения алгоритма
+5) search field
