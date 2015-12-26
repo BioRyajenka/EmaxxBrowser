@@ -8,13 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.emaxxbrowserteam.emaxxbrowser.loader.IListener;
 import com.emaxxbrowserteam.emaxxbrowser.model.Algorithm;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -38,8 +35,19 @@ public class AlgorithmFragment extends Fragment {
     }
 
     private String decorateHtml(Document doc) {
-        //Elements els = doc.select("#contents-table");
-        //els.remove();
+        doc.select("#contents-table").remove();
+        doc.select(".title").remove();
+        doc.select(".algoinfo").remove();
+        doc.select(".menu").remove();
+        doc.select("#disqus_thread").remove();
+        doc.head().append("<link rel=\"stylesheet\" type=\"text/css\" " + "href=\"style" +
+                ".css\" />");
+
+        Element e = doc.select(".main").first();
+        Element div = doc.createElement("div");
+        e.replaceWith(div);
+        div.appendChild(e);
+        div.addClass("container");
         return doc.outerHtml();
     }
 
@@ -53,21 +61,20 @@ public class AlgorithmFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_algorithm, container, false);
         getActivity().getActionBar().setTitle(algorithm.getTitle());
 
-        final TextView t = (TextView) rootView.findViewById(R.id.textView);
-//        t.setText(algorithm.getHtml());
+        //final TextView t = (TextView) rootView.findViewById(R.id.textView);
+        //t.setText(algorithm.getHtml());
+
+        final WebView wv = (WebView) rootView.findViewById(R.id.webView);
 
         algorithm.loadHtml(new IListener() {
             @Override
             public void listen(Document document) {
-                t.setText(decorateHtml(document));
+                wv.getSettings().setJavaScriptEnabled(true);
+                wv.loadDataWithBaseURL("file:///android_asset/www/", decorateHtml(document), "text/html", "utf-8",
+                        null);
             }
         });
 
-        //WebView wv = (WebView) rootView.findViewById(R.id.webView);
-
-        //wv.getSettings().setJavaScriptEnabled(true);
-        //wv.loadDataWithBaseURL(null, algorithm.getHtml(), "text/html",
-        //        "utf-8", null);
 
         return rootView;
     }

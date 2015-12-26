@@ -2,16 +2,11 @@ package com.emaxxbrowserteam.emaxxbrowser.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.emaxxbrowserteam.emaxxbrowser.MainActivity;
 import com.emaxxbrowserteam.emaxxbrowser.loader.DownloadTask;
 import com.emaxxbrowserteam.emaxxbrowser.loader.FileUtils;
 import com.emaxxbrowserteam.emaxxbrowser.loader.IListener;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 public class Algorithm implements Parcelable {
 
