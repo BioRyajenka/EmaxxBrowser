@@ -2,9 +2,11 @@ package com.emaxxbrowserteam.emaxxbrowser.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.emaxxbrowserteam.emaxxbrowser.MainActivity;
 import com.emaxxbrowserteam.emaxxbrowser.loader.DownloadTask;
+import com.emaxxbrowserteam.emaxxbrowser.loader.FileUtils;
 import com.emaxxbrowserteam.emaxxbrowser.loader.IListener;
 
 import org.jsoup.Jsoup;
@@ -28,6 +30,8 @@ public class Algorithm implements Parcelable {
                 Algorithm.this.html = decorateHtml(document);
             }
         });
+        //Log.d(TAG, );
+        task.execute(FileUtils.getURL(url));
     }
 
     private String decorateHtml(Document doc) {

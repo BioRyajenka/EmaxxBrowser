@@ -13,10 +13,21 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
 public final class FileUtils {
+
+    public static URL getURL(String url) {
+        try {
+            return new URL(url);
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "URL exception " + e.toString());
+            Log.d(TAG, "url is " + url);
+            return null;
+        }
+    }
 
     public static void writeDocument(File file, Document text) {
         Log.e(TAG, "make cache");

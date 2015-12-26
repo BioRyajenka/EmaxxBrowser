@@ -24,6 +24,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.Toast;
 
 import com.emaxxbrowserteam.emaxxbrowser.loader.DownloadTask;
+import com.emaxxbrowserteam.emaxxbrowser.loader.FileUtils;
 import com.emaxxbrowserteam.emaxxbrowser.loader.IListener;
 import com.emaxxbrowserteam.emaxxbrowser.loader.Parser;
 import com.emaxxbrowserteam.emaxxbrowser.model.Algorithm;
@@ -93,18 +94,9 @@ public class MainActivity extends Activity {
                     updateSuperTopics(Parser.parse(MainActivity.this, document));
                 }
             });
-            superTopicTask.execute(getURL(Parser.E_MAXX_ALGO_URL));
+            superTopicTask.execute(FileUtils.getURL(Parser.E_MAXX_ALGO_URL));
         } else {
             //TODO: saving superTopicTask
-        }
-    }
-
-    private URL getURL(String url) {
-        try {
-            return new URL(url);
-        } catch (MalformedURLException e) {
-            Log.e(TAG, e.toString(), e);
-            return null;
         }
     }
 

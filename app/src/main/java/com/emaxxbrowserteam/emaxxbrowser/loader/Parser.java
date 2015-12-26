@@ -1,5 +1,7 @@
 package com.emaxxbrowserteam.emaxxbrowser.loader;
 
+import android.util.Log;
+
 import com.emaxxbrowserteam.emaxxbrowser.MainActivity;
 import com.emaxxbrowserteam.emaxxbrowser.model.Algorithm;
 import com.emaxxbrowserteam.emaxxbrowser.model.SuperTopic;
@@ -19,7 +21,7 @@ public class Parser {
     public static List<SuperTopic> parse(MainActivity activity, Document document) {
         List<SuperTopic> superTopics = new ArrayList<>();
         Elements elements = document.getElementsByClass("content").get(0).children();
-        for (int id = 0; id < elements.size();) {
+        for (int id = 0; id < elements.size(); ) {
             Element superThemeElement = elements.get(id++);
             if (superThemeElement.tagName().equals("h2")) {
                 SuperTopic superTopic = new SuperTopic(normalize(superThemeElement.html()));
@@ -38,7 +40,8 @@ public class Parser {
                     }
                     Elements algos = elements.get(id++).children();
                     for (Element algo : algos) {
-                        curTopic.add(new Algorithm(activity, normalize(algo.text()), document.baseUri() + algo.childNode(0).attr("href")));
+                        curTopic.add(new Algorithm(activity, normalize(algo.text()),
+                                E_MAXX_ALGO_URL + "/" + algo.childNode(0).attr("href")));
                     }
                     superTopic.add(curTopic);
                 }
