@@ -1,5 +1,6 @@
 package com.emaxxbrowserteam.emaxxbrowser;
 
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -40,11 +41,13 @@ public class TopicFragment extends Fragment {
         Topic topic = getArguments().getParcelable("topic");
         Log.d(TAG, "ocv: topic is " + topic);
 
-        View rootView = inflater.inflate(R.layout.fragment_algorithm, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_topic, container, false);
 
-        LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.themeLinearLayout);
+        LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.topicLinearLayout);
         TextView textView = (TextView) rootView.findViewById(R.id.textLabel);
         textView.setText(topic.getTitle() + " desc");
+        Log.d(TAG, "act is " + getActivity());
+        Log.d(TAG, "bar is " + getActivity().getActionBar());
         getActivity().getActionBar().setTitle(topic.getTitle());
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
