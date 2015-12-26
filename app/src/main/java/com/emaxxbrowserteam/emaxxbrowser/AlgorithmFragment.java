@@ -16,10 +16,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
+
 /**
  * Created by Jackson on 26.12.2015.
  */
 public class AlgorithmFragment extends Fragment {
+    public static String temp;
+
     @Deprecated
     public AlgorithmFragment() {
     }
@@ -70,17 +74,29 @@ public class AlgorithmFragment extends Fragment {
         wv.getSettings().setJavaScriptEnabled(true);
         wv.getSettings().setBuiltInZoomControls(true);
 
-//        algorithm.loadHtml(new IListener() {
-//            @Override
-//            public void listen(Document document) {
-//                wv.loadDataWithBaseURL(getActivity().getCacheDir().getAbsolutePath(), decorateHtml(document), "text/html", "utf-8",
-//                        null);
-//            }
-//        });
-        String picture = getActivity().getCacheDir().getAbsolutePath() + "68bd40b34bc2c510b5c0ff6052263c23";
-        Log.e(TAG, "picture = " + picture);
-        wv.loadDataWithBaseURL("", "<html> <body> <img src=\"" + picture + "\">  </img> </body> </html> ", "text/html", "utf-8",
-                null);
+        algorithm.loadHtml(new IListener() {
+            @Override
+            public void listen(Document document) {
+                //wv.loadDataWithBaseURL(getActivity().getCacheDir().getAbsolutePath(),
+                // decorateHtml(document), "text/html", "utf-8",
+                //        null);
+                String dir = getActivity().getExternalCacheDir() + "/";
+                //Log.e(TAG, "dir: " + getActivity().getCacheDir().getAbsolutePath());
+                //Log.e(TAG, "edir: " + getActivity().getExternalCacheDir());
+                //Log.e(TAG, "efdir: " + getActivity().getExternalFilesDir(null));
+                //String path = "file://" + dir + temp;
+                //Log.e(TAG, "path: " + path);
+
+                //for (File f : getActivity().getExternalFilesDir(null).listFiles()) {
+                //    Log.e(TAG, "file: " + f);
+                //}
+
+                
+
+                wv.loadDataWithBaseURL(dir, "<html> <body> <img src=\"" + temp + "\">  " +
+                        "</img> </body> </html> ", "text/html", "utf-8", null);
+            }
+        });
 
         return rootView;
     }

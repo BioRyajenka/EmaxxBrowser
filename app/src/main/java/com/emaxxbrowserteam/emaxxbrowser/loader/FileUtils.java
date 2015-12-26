@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.emaxxbrowserteam.emaxxbrowser.AlgorithmFragment;
 import com.emaxxbrowserteam.emaxxbrowser.MainActivity;
 
 import org.jsoup.Jsoup;
@@ -80,6 +81,10 @@ public final class FileUtils {
 //            Log.e(TAG, "    " + link);
             String cacheFileName = link.substring(link.lastIndexOf('/') + 1).replace(".png", "");
             File cacheFile = new File(cacheDir, cacheFileName);
+            if (link.endsWith(".png")) {
+                Log.d(TAG, "cfn: " + cacheFileName);
+                AlgorithmFragment.temp = cacheFileName;
+            }
             if (!cacheFile.exists()) {
                 try {
                     cacheFile.createNewFile();
@@ -157,7 +162,7 @@ public final class FileUtils {
         return document;
     }
 
-    private static final String TAG = "FileUtils";
+    private static final String TAG = "FileUtils.java";
 
     private FileUtils() {
     }
