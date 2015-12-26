@@ -5,3 +5,4 @@
 3) reload page <br>
 4) отображать время сохранения алгоритма
 5) search field
+6) иконки для superTopic
