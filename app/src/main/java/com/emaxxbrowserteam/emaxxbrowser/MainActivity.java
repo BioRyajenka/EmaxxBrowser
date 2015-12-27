@@ -271,6 +271,7 @@ public class MainActivity extends Activity implements
                 FileUtils.clearAlgorithmCache(getCacheDir(), alg);
                 Toast.makeText(this, "Cache cleared", Toast.LENGTH_SHORT).show();
                 replaceFragment(AlgorithmFragment.newInstance(alg));
+                fragmentStack.remove(fragmentStack.size() - 1);
                 return true;
             case R.id.action_settings:
                 Intent i = new Intent(this, SettingsActivity.class);
