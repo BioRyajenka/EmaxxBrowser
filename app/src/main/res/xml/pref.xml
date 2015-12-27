@@ -10,12 +10,23 @@
         android:summary="Address for notifications"
         android:title="Address">
     </EditTextPreference-->
-    <Preference
-        android:key="@string/pref_clear_cache"
-        android:summary="And reload titles"
-        android:title="Clear cache"/>
-    <Preference
-        android:key="@string/pref_upload_all"
-        android:summary="Warning! It may crash e-maxx.ru!"
-        android:title="Upload all pages"/>
+    <PreferenceCategory
+        android:title="Theme">
+        <ListPreference
+            android:key="@string/pref_color_theme"
+            android:summary="Affects only algorithm browsing"
+            android:title="Choose your display theme"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Cache">
+        <Preference
+            android:key="@string/pref_clear_cache"
+            android:summary="And reload titles"
+            android:title="Clear cache"/>
+        <Preference
+            android:key="@string/pref_upload_all"
+            android:summary="Warning! It may crash e-maxx.ru!"
+            android:title="Upload all pages"/>
+    </PreferenceCategory>
 </PreferenceScreen>

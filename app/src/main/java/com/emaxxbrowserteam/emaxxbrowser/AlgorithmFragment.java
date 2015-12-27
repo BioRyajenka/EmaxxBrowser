@@ -3,8 +3,10 @@ package com.emaxxbrowserteam.emaxxbrowser;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,7 +69,12 @@ public class AlgorithmFragment extends Fragment {
             a.html(html.replace("\t", "&nbsp;&nbsp;"));
         }
 
-        doc.head().append("<link rel=\"stylesheet\" type=\"text/css\" " + "href=\"style" +
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        String style = sp.getString(getString(R.string.pref_color_theme), "classic");
+
+        Log.d(TAG, "style: " + style);
+
+        doc.head().append("<link rel=\"stylesheet\" type=\"text/css\" " + "href=\"" + style + ".css\"" +
                 ".css\" />");
         doc.head().append("<script type=\"text/javascript\" src=\"script.js\">");
 

@@ -2,11 +2,18 @@ package com.emaxxbrowserteam.emaxxbrowser;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.emaxxbrowserteam.emaxxbrowser.loader.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jackson on 27.12.2015.
@@ -37,5 +44,28 @@ public class SettingsActivity extends PreferenceActivity {
                 return true;
             }
         });
+        ListPreference l = (ListPreference) findPreference(getString(R.string.pref_color_theme));
+        List<String> list = new ArrayList<>();
+        try {
+            int i = 0;
+            for (String s : getAssets().list("www")) {
+                if (s.endsWith(".css")) {
+                    list.add(s.replace(".css", ""));
+                }
+                i++;
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Can't access assets: " + e);
+        }
+        CharSequence arr[] = new CharSequence[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            arr[i] = list.get(i);
+        }
+        l.setEntries(arr);
+        l.setEntryValues(arr);
+        Log.d(TAG, "value is " + l.getValue());
+        //l.setValueIndex(0);
     }
+
+    private static String TAG = "SettingsActivity.java";
 }

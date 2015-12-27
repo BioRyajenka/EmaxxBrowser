@@ -273,16 +273,26 @@ public class MainActivity extends Activity implements
                 replaceFragment(AlgorithmFragment.newInstance(alg));
                 return true;
             case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                Intent i = new Intent(this, SettingsActivity.class);
+                startActivityForResult(i, 0);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onResult");
+        Object o = fragmentStack.get(fragmentStack.size() - 1);
+        if (o instanceof Algorithm) {
+            replaceFragment(AlgorithmFragment.newInstance((Algorithm)o));
+        }
+    }
+
     /*
-     * * Called when invalidateOptionsMenu() is triggered
-     */
+         * * Called when invalidateOptionsMenu() is triggered
+         */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         Log.d(TAG, "prepare");

@@ -15,5 +15,6 @@
     <string name="pref_upload_all">pref_upload_all</string>
     <string name="pref_clear_cache">pref_clear_cache</string>
     <string name="refresh_all_extra">refresh_all</string>
+    <string name="pref_color_theme">pref_color_theme</string>
 
 </resources>

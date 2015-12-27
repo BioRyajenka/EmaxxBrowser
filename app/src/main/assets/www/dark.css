@@ -1,9 +1,11 @@
 body {
   height: 100%;
   width: 96%;
+  background-color: #000000;
+  color: white;
 }
 ul {
-  width: 60%
+  width: 80%
 }
 div.container {
   overflow: hidden!important;
