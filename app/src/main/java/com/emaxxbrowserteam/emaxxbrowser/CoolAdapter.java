@@ -14,6 +14,11 @@ import com.emaxxbrowserteam.emaxxbrowser.model.Topic;
 import java.util.List;
 
 public class CoolAdapter extends BaseExpandableListAdapter {
+
+	public List<SuperTopic> getSuperTopics() {
+		return superTopics;
+	}
+
 	private List<SuperTopic> superTopics;
 	private Context mContext;
 

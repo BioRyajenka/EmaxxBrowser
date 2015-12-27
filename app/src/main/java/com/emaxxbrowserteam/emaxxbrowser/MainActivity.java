@@ -29,6 +29,7 @@ import com.emaxxbrowserteam.emaxxbrowser.model.Topic;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -42,6 +43,7 @@ public class MainActivity extends Activity {
     public static ProgressDialog pd;
 
     public static ArrayList fragmentStack;
+    private List<SuperTopic> groups;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +86,9 @@ public class MainActivity extends Activity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        fragmentStack = new ArrayList();
-        fragmentStack.add(null);
-
         if (savedInstanceState == null) {
+            fragmentStack = new ArrayList();
+            fragmentStack.add(null);
             showWelcomeFragment();
             superTopicTask = new DownloadTask(this, new IListener() {
                 @Override
@@ -97,11 +98,47 @@ public class MainActivity extends Activity {
             });
             superTopicTask.execute(FileUtils.getURL(Parser.E_MAXX_ALGO_URL));
         } else {
+            Log.w(TAG, "saved instanse is not null");
+            RetainInstance retainInstance = (RetainInstance) getLastNonConfigurationInstance();
+            fragmentStack = retainInstance.fragmentStack;
+            superTopicTask = retainInstance.downloadTask;
+            superTopicTask.attachActivity(this);
+            if (retainInstance.superTopics != null) {
+                Log.w(TAG, "show super topics");
+                updateSuperTopics(retainInstance.superTopics);
+            }
             //TODO: saving superTopicTask
         }
     }
 
+    private class RetainInstance {
+        public DownloadTask downloadTask;
+        public List<SuperTopic> superTopics;
+        public ArrayList fragmentStack;
+
+        public RetainInstance(DownloadTask downloadTask, List<SuperTopic> superTopics, ArrayList fragmentStack) {
+            this.downloadTask = downloadTask;
+            this.superTopics = superTopics;
+            this.fragmentStack = fragmentStack;
+        }
+    }
+
+    @Override
+    public Object onRetainNonConfigurationInstance() {
+//        List<SuperTopic> list = null;
+//        if (mDrawerList.getAdapter() instanceof CoolAdapter) {
+//            Log.w(TAG, "m drawer list instance if cool adapter");
+//            CoolAdapter coolAdapter = (CoolAdapter) mDrawerList.getAdapter();
+//            if (coolAdapter != null) {
+//                list = coolAdapter.getSuperTopics();
+//            }
+//        }
+        Log.w(TAG, "super topic task = " + (superTopicTask == null ? "null" : "not null") + ", " + "list = " + String.valueOf(groups));
+        return new RetainInstance(superTopicTask, groups, fragmentStack);
+    }
+
     private void updateSuperTopics(List<SuperTopic> groups) {
+        this.groups = groups;
         Log.d(TAG, "finished fetching groups");
         ExpandableListAdapter adapter = new CoolAdapter(getApplicationContext(), groups);
         Log.d(TAG, "finished creating adapter groups");
