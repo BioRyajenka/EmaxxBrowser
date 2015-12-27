@@ -143,12 +143,6 @@ public class MainActivity extends Activity {
         Log.d(TAG, "adapter assigned");
     }
 
-    public void buttononclick(View v) {
-        if (v != null && v.getId() == R.id.button) {
-            FileUtils.clearCache(getCacheDir());
-        }
-    }
-
     void outStack() {
         Log.w(TAG, "size of stack = " + fragmentStack.size());
         for (Object reason : fragmentStack) {
