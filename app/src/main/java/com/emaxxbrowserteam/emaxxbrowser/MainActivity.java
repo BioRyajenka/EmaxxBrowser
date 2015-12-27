@@ -102,7 +102,6 @@ public class MainActivity extends Activity {
             RetainInstance retainInstance = (RetainInstance) getLastNonConfigurationInstance();
             fragmentStack = retainInstance.fragmentStack;
             superTopicTask = retainInstance.downloadTask;
-            superTopicTask.attachActivity(this);
             if (retainInstance.superTopics != null) {
                 Log.w(TAG, "show super topics");
                 updateSuperTopics(retainInstance.superTopics);
@@ -208,8 +207,10 @@ public class MainActivity extends Activity {
         // Handle action bar actions click
         switch (item.getItemId()) {
             case R.id.action_reload:
-                //Object cur = fragmentStack.get(fragmentStack.size() - 1);
-                //FileUtils.clearTopicCache(getCacheDir(), );
+                Object cur = fragmentStack.get(fragmentStack.size() - 1);
+                FileUtils.clearAlgorithmCache(getCacheDir(), (Algorithm) cur);
+                Toast.makeText(this, "Cache cleared", Toast.LENGTH_SHORT).show();
+
                 return true;
             case R.id.action_settings:
                 Toast.makeText(this, "Kek", Toast.LENGTH_SHORT).show();

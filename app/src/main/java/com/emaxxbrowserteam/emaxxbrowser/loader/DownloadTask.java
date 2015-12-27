@@ -66,9 +66,5 @@ public class DownloadTask extends AsyncTask<URL, Void, Document> {
         sendMessage(1);
     }
 
-    public void attachActivity(MainActivity activity) {
-        this.activity = activity;
-    }
-
     public static final String TAG = "DownloadTask";
 }
