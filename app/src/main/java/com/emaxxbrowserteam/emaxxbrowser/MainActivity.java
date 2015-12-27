@@ -125,7 +125,8 @@ public class MainActivity extends Activity {
 
     @Override
     public Object onRetainNonConfigurationInstance() {
-        Log.w(TAG, "on retain: super topic task = " + (superTopicTask == null ? "null" : "not null") + ", " + "list = " + String.valueOf(groups));
+        Log.w(TAG, "on retain: super topic task = " + (superTopicTask == null ? "null" :
+                "not null") + ", " + "list = " + String.valueOf(groups));
         return new RetainInstance(superTopicTask, groups, fragmentStack);
     }
 
@@ -193,6 +194,7 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "created");
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -206,7 +208,8 @@ public class MainActivity extends Activity {
         // Handle action bar actions click
         switch (item.getItemId()) {
             case R.id.action_reload:
-                Toast.makeText(this, "Kek", Toast.LENGTH_SHORT).show();
+                //Object cur = fragmentStack.get(fragmentStack.size() - 1);
+                //FileUtils.clearTopicCache(getCacheDir(), );
                 return true;
             case R.id.action_settings:
                 Toast.makeText(this, "Kek", Toast.LENGTH_SHORT).show();
@@ -224,8 +227,16 @@ public class MainActivity extends Activity {
      */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        Log.d(TAG, "prepare");
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        menu.findItem(R.id.action_reload).setVisible(!drawerOpen);
         menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+        menu.findItem(R.id.action_about).setVisible(!drawerOpen);
+
+        Object cur = fragmentStack.get(fragmentStack.size() - 1);
+        MenuItem item = menu.findItem(R.id.action_reload);
+        item.setVisible(cur != null && cur instanceof Algorithm);
+        //this.invalidateOptionsMenu();
         return super.onPrepareOptionsMenu(menu);
     }
 
