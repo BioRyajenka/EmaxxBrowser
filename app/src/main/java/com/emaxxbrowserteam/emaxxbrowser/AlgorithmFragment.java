@@ -18,6 +18,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.ListIterator;
+
 /**
  * Created by Jackson on 26.12.2015.
  */
@@ -44,12 +46,34 @@ public class AlgorithmFragment extends Fragment {
         doc.select("#disqus_thread").remove();
         doc.head().append("<link rel=\"stylesheet\" type=\"text/css\" " + "href=\"style" +
                 ".css\" />");
+        doc.head().append("<script type=\"text/javascript\" src=\"script.js\">");
 
         Element e = doc.select(".main").first();
         Element div = doc.createElement("div");
+        div.addClass("container");
         e.replaceWith(div);
         div.appendChild(e);
-        div.addClass("container");
+
+        ListIterator<Element> it = doc.select("h1").listIterator();
+        int divId = 0;
+        while (it.hasNext()) {
+            Element h = it.next();
+            div = doc.createElement("div");
+            div.addClass("expandable");
+            div.attr("id", "div" + divId);
+
+            e = h.nextElementSibling();
+            while (e != null && !e.tagName().equalsIgnoreCase("h1")) {
+                div.appendChild(e);
+                //h.remove();
+            }
+            Element a = doc.createElement("a");
+            a.attr("href", "#").attr("onclick", "swap('div" + divId + "');return false;");
+            h.replaceWith(a);
+            a.after(div);
+
+            divId++;
+        }
         return doc.outerHtml();
     }
 
@@ -68,13 +92,14 @@ public class AlgorithmFragment extends Fragment {
         wv.getSettings().setAllowFileAccess(true);
         wv.getSettings().setJavaScriptEnabled(true);
         wv.getSettings().setBuiltInZoomControls(true);
-        wv.setBackgroundColor(Color.argb(255, 233, 233, 233));
 
         algorithm.loadHtml(new IListener() {
             @Override
             public void listen(Document document) {
                 String dec = decorateHtml(document);
                 wv.loadDataWithBaseURL("files://" + getActivity().getCacheDir().getAbsolutePath(), dec, "text/html", Parser.ENCODING, null);
+                wv.loadDataWithBaseURL("file:///android_asset/www/",
+                        decorateHtml(document), "text/html", "utf-8", null);
             }
         });
 

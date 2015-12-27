@@ -70,6 +70,9 @@ public final class FileUtils {
             String link = Parser.E_MAXX_URL + attr.substring(2);
             String cacheFileName = link.substring(link.lastIndexOf('/') + 1).replace(".png", "");
             File cacheFile = new File(cacheDir, cacheFileName);
+            if (link.endsWith(".png")) {
+                Log.d(TAG, "cfn: " + cacheFileName);
+            }
             if (!cacheFile.exists()) {
                 try {
                     cacheFile.createNewFile();
@@ -143,7 +146,7 @@ public final class FileUtils {
         return document;
     }
 
-    private static final String TAG = "FileUtils";
+    private static final String TAG = "FileUtils.java";
 
     private FileUtils() {
     }

@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title></title>
+<style type="text/css" media="Screen">
+#navigation a {
+  text-decoration: none;
+  display: block;
+  padding: 3px 12px 3px 8px;
+  background-color: #666;
+  color: #fff;
+  border: 1px solid #ddd;
+}
+#navigation a:active {
+  padding: 2px 13px 4px 7px;
+  background-color: #444;
+  color: #eee;
+  border: 1px solid #333;
+}
+</style>
+<script type="text/javascript">
+function swap(targetId){
+  if (document.getElementById){
+        target = document.getElementById(targetId);
+            if (target.style.display == "none"){
+                target.style.display = "";
+            } else{
+                target.style.display = "none";
+            }
+                
+  }
+}
+</script>
+</head>
+<body>
+	<div id="navigation">
+		<a href="#" onclick="swap('sectionOneLinks');return false;">Click me</a>
+		<div id="sectionOneLinks" style="display: none;">
+			Some text1
+		</div>
+		<a href="#" onclick="swap('sectionTwoLinks');return false;">Click me</a>
+		<div id="sectionTwoLinks" style="display: none;">
+			Some text2
+		</div>
+		<a href="#" onclick="swap('sectionThreeLinks');return false;">Click</a>
+		<div id="sectionThreeLinks" style="display: none;">
+			Some text3
+		</div>
+	</div>
+</body>
+</html>
