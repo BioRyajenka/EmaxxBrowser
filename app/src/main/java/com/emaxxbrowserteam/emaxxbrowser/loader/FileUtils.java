@@ -1,11 +1,6 @@
 package com.emaxxbrowserteam.emaxxbrowser.loader;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
-
-import com.emaxxbrowserteam.emaxxbrowser.AlgorithmFragment;
-import com.emaxxbrowserteam.emaxxbrowser.MainActivity;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,7 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,8 +25,7 @@ public final class FileUtils {
         try {
             return new URL(url);
         } catch (MalformedURLException e) {
-            Log.e(TAG, "URL exception " + e.toString());
-            Log.d(TAG, "url is " + url);
+            Log.e(TAG, "URL exception " + e.toString() + ", url = " + url);
             return null;
         }
     }
@@ -42,7 +35,7 @@ public final class FileUtils {
         PrintWriter writer = null;
         try {
             writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file),
-                    "cp1251"));
+                    Parser.ENCODING));
             writer.println(text);
             Log.e(TAG, "cache was made");
         } catch (IOException e) {
@@ -55,17 +48,13 @@ public final class FileUtils {
     }
 
     public static void inputStream2file(File file, InputStream inputStream) {
-        Log.e(TAG, "input stream to file " + file.getName());
-        Log.e(TAG, "dir = " + file.getAbsolutePath());
+        Log.e(TAG, "input stream to file " + file.getName() + ", " + file.getAbsolutePath());
         FileOutputStream writer;
         try {
             writer = new FileOutputStream(file);
             byte[] buffer = new byte[1024 * 40];
             int len = 0;
             while ((len = inputStream.read(buffer, 0, buffer.length)) >= 0) {
-//                for (int i = 0; i < len; i++) {
-//                    writer.write(buffer[i]);
-//                }
                 writer.write(buffer, 0, len);
             }
         } catch (IOException e) {
@@ -79,7 +68,6 @@ public final class FileUtils {
         for (Element imageElement : imageElements) {
             String attr = imageElement.attr("src");
             String link = Parser.E_MAXX_URL + attr.substring(2);
-//            Log.e(TAG, "    " + link);
             String cacheFileName = link.substring(link.lastIndexOf('/') + 1).replace(".png", "");
             File cacheFile = new File(cacheDir, cacheFileName);
             if (link.endsWith(".png")) {
@@ -93,14 +81,12 @@ public final class FileUtils {
                 }
             }
             if (cacheFile.exists() && cacheFile.canWrite()) {
-//                Log.e(TAG, "    file exists " + cacheFile.getName());
                 URL url = getURL(link);
                 try {
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     InputStream inputStream = connection.getInputStream();
                     inputStream2file(cacheFile, inputStream);
                     imageElement.attr("src", "file://" + cacheFile.getAbsolutePath());
-//                    Log.e(TAG, "new attr = " + imageElement.attr("src"));
                 } catch (IOException ignored) {}
             }
         }
@@ -119,7 +105,7 @@ public final class FileUtils {
 
     private static Document scanner2document(InputStream inputStream) throws IOException {
         StringBuilder html = new StringBuilder();
-        Scanner scanner = new Scanner(inputStream, "cp1251");
+        Scanner scanner = new Scanner(inputStream, Parser.ENCODING);
         while (scanner.hasNextLine()) {
             html.append(scanner.nextLine());
             html.append('\n');
@@ -152,7 +138,7 @@ public final class FileUtils {
                     Log.e(TAG, "cant make cache file");
                 }
             }
-            Log.e(TAG, "    ok, not null, start make cache in file " + cache.getName()  );
+            Log.e(TAG, "    ok, not null, start make cache in file " + cache.getName());
             if (cache.exists()) {
                 writeDocument(cacheDir, cache, document);
             }

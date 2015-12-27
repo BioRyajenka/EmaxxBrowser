@@ -1,7 +1,5 @@
 package com.emaxxbrowserteam.emaxxbrowser;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -24,10 +22,14 @@ import com.emaxxbrowserteam.emaxxbrowser.loader.DownloadTask;
 import com.emaxxbrowserteam.emaxxbrowser.loader.FileUtils;
 import com.emaxxbrowserteam.emaxxbrowser.loader.IListener;
 import com.emaxxbrowserteam.emaxxbrowser.loader.Parser;
+import com.emaxxbrowserteam.emaxxbrowser.model.Algorithm;
 import com.emaxxbrowserteam.emaxxbrowser.model.SuperTopic;
 import com.emaxxbrowserteam.emaxxbrowser.model.Topic;
 
 import org.jsoup.nodes.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
@@ -38,6 +40,8 @@ public class MainActivity extends Activity {
 
     public static Handler handler;
     public static ProgressDialog pd;
+
+    public static ArrayList fragmentStack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,17 +74,18 @@ public class MainActivity extends Activity {
         ) {
             public void onDrawerClosed(View view) {
                 getActionBar().setDisplayShowTitleEnabled(true);
-                // calling onPrepareOptionsMenu() to show action bar icons
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
                 getActionBar().setDisplayShowTitleEnabled(false);
-                // calling onPrepareOptionsMenu() to hide action bar icons
                 invalidateOptionsMenu();
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        fragmentStack = new ArrayList();
+        fragmentStack.add(null);
 
         if (savedInstanceState == null) {
             showWelcomeFragment();
@@ -96,21 +101,6 @@ public class MainActivity extends Activity {
         }
     }
 
-    private static List<SuperTopic> fetchSuperTopics() {
-//        List<SuperTopic> res = new ArrayList<>();
-//        List<Algorithm> alg = new ArrayList<>();
-//        alg.add(new Algorithm("Algorithm 0", "url"));
-//        alg.add(new Algorithm("Algorithm 1", "url"));
-//        alg.add(new Algorithm("Algorithm 2", "url"));
-//        List<Topic> temp = new ArrayList<>();
-//        temp.add(new Topic("Topic 0", alg));
-//        temp.add(new Topic("Topic 1", alg));
-//        res.add(new SuperTopic("SuperTopic 1", temp));
-//        res.add(new SuperTopic("SuperTopic 2", temp));
-//        return res;
-        return null;
-    }
-
     private void updateSuperTopics(List<SuperTopic> groups) {
         Log.d(TAG, "finished fetching groups");
         ExpandableListAdapter adapter = new CoolAdapter(getApplicationContext(), groups);
@@ -123,6 +113,42 @@ public class MainActivity extends Activity {
         if (v != null && v.getId() == R.id.button) {
             FileUtils.clearCache(getCacheDir());
         }
+    }
+
+    void outStack() {
+        Log.w(TAG, "size of stack = " + fragmentStack.size());
+        for (Object reason : fragmentStack) {
+            if (reason == null) {
+                Log.e(TAG, "Welcome");
+            } else if (reason instanceof Topic) {
+                Log.e(TAG, "topic");
+            } else if (reason instanceof Algorithm) {
+                Log.e(TAG, "algorithm");
+            } else {
+                throw new AssertionError();
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (fragmentStack.isEmpty()) {
+            fragmentStack.add(null);
+        } else if (fragmentStack.size() > 1) {
+            fragmentStack.remove(fragmentStack.size() - 1);
+            Object reason = fragmentStack.get(fragmentStack.size() - 1);
+            if (reason == null) {
+                replaceFragment(new WelcomeFragment());
+            } else if (reason instanceof Topic) {
+                replaceFragment(TopicFragment.newInstance((Topic) reason));
+            } else if (reason instanceof Algorithm) {
+                replaceFragment(AlgorithmFragment.newInstance((Algorithm) reason));
+            } else {
+                throw new AssertionError();
+            }
+            fragmentStack.remove(fragmentStack.size() - 1);
+        }
+//        outStack();
     }
 
     private class SlideMenuChildClickListener implements OnChildClickListener {
@@ -181,6 +207,16 @@ public class MainActivity extends Activity {
             Log.e(TAG, "Error replacing fragment. It's null.");
             return;
         }
+        if (fragment instanceof WelcomeFragment) {
+            fragmentStack.add(null);
+        } else if (fragment instanceof TopicFragment) {
+            fragmentStack.add(fragment.getArguments().getParcelable("topic"));
+        } else if (fragment instanceof AlgorithmFragment) {
+            fragmentStack.add(fragment.getArguments().getParcelable("algorithm"));
+        } else {
+            throw new AssertionError();
+        }
+//        outStack();
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
     }

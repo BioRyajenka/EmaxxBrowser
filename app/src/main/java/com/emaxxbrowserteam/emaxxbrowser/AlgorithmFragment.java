@@ -14,6 +14,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.emaxxbrowserteam.emaxxbrowser.loader.IListener;
+import com.emaxxbrowserteam.emaxxbrowser.loader.Parser;
 import com.emaxxbrowserteam.emaxxbrowser.model.Algorithm;
 
 import org.jsoup.nodes.Document;
@@ -129,9 +130,6 @@ public class AlgorithmFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_algorithm, container, false);
         getActivity().getActionBar().setTitle(algorithm.getTitle());
 
-        //final TextView t = (TextView) rootView.findViewById(R.id.textView);
-        //t.setText(algorithm.getHtml());
-
         final WebView wv = (WebView) rootView.findViewById(R.id.webView);
 
         wv.getSettings().setAllowFileAccess(true);
@@ -163,6 +161,8 @@ public class AlgorithmFragment extends Fragment {
         algorithm.loadHtml(new IListener() {
             @Override
             public void listen(Document document) {
+                String dec = decorateHtml(document);
+                wv.loadDataWithBaseURL("files://" + getActivity().getCacheDir().getAbsolutePath(), dec, "text/html", Parser.ENCODING, null);
                 wv.loadDataWithBaseURL("file:///android_asset/www/",
                         decorateHtml(document), "text/html", "utf-8", null);
             }
