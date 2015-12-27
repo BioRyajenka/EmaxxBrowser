@@ -60,11 +60,15 @@ public class DownloadTask extends AsyncTask<URL, Void, Document> {
     @Override
     protected void onPostExecute(Document ignored) {
         if (document != null) {
-            listener.listen(document);
+            listener.listen(document, activity);
         } else {
             Toast.makeText(activity, "Problems with internet connection", Toast.LENGTH_SHORT).show();
         }
         sendMessage(1);
+    }
+
+    public void attachActivity(Activity activity) {
+        this.activity = activity;
     }
 
     public static final String TAG = "DownloadTask";
