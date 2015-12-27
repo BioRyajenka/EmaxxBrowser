@@ -205,8 +205,14 @@ public class MainActivity extends Activity {
         }
         // Handle action bar actions click
         switch (item.getItemId()) {
+            case R.id.action_reload:
+                Toast.makeText(this, "Kek", Toast.LENGTH_SHORT).show();
+                return true;
             case R.id.action_settings:
-                Toast.makeText(this, "Kek", Toast.LENGTH_SHORT);
+                Toast.makeText(this, "Kek", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_about:
+                Toast.makeText(this, "Kek", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
