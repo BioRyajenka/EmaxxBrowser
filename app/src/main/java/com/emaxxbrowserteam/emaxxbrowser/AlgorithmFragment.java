@@ -69,7 +69,8 @@ public class AlgorithmFragment extends Fragment {
             a.html(html.replace("\t", "&nbsp;&nbsp;"));
         }
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        if (!isAdded()) return "kekushki";
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String style = sp.getString(getString(R.string.pref_color_theme), "classic");
 
         Log.d(TAG, "style: " + style);
@@ -130,6 +131,8 @@ public class AlgorithmFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
+        if (!isAdded()) return null;
+
         Algorithm algorithm = getArguments().getParcelable("algorithm");
 
         id++;
@@ -158,8 +161,8 @@ public class AlgorithmFragment extends Fragment {
                 if (url.startsWith(homeUrl)) {
                     String aurl = url.substring(homeUrl.length());
                     Activity act = AlgorithmFragment.this.getActivity();
-                    if (act == null) return true;
-                    AlgorithmFragment.this.activity.showAlgorithmFragment(aurl);
+                    if (act == null || !isAdded()) return true;
+                    ((MainActivity)AlgorithmFragment.this.getActivity()).showAlgorithmFragment(aurl);
                 } else {
                     Log.d(TAG, "Intent");
                     Intent i = new Intent(Intent.ACTION_VIEW);
@@ -180,14 +183,6 @@ public class AlgorithmFragment extends Fragment {
         });
 
         return rootView;
-    }
-
-    private MainActivity activity;
-
-    @Override
-    public void onAttach(Activity activity) {
-        this.activity = (MainActivity)activity;
-        super.onAttach(activity);
     }
 
     private static String TAG = "AlgorithmFragment.java";
