@@ -78,6 +78,11 @@ public class MainActivity extends Activity implements
         sv.setOnCloseListener(this);
         mDrawerList.addHeaderView(header);
 
+        TextView temp = (TextView) header.findViewById(R.id.crutch);
+        temp.requestFocus();
+        //sv.setFocusable(false);
+        sv.clearFocus();
+
         // enabling action bar app icon and behaving it as toggle button
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
