@@ -54,6 +54,9 @@ public class Parser {
                         curTopic = new Topic(normalize(eraseCount(topicElement.html())));
                         ++id;
                     }
+                    if (elements.get(id).tagName().equals(TOPIC_TAG)) {
+                        continue;
+                    }
                     Elements algos = elements.get(id++).children();
                     for (Element algo : algos) {
                         Algorithm algorithm = new Algorithm(activity, normalize(algo.text()),

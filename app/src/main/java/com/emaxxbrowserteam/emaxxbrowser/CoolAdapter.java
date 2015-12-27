@@ -71,6 +71,8 @@ public class CoolAdapter extends BaseExpandableListAdapter {
 	public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
 			ViewGroup parent) {
 
+		SuperTopic currentSuperTopic = filteredList.get(groupPosition);
+
 		if (convertView == null) {
 			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(
 					Context.LAYOUT_INFLATER_SERVICE);
@@ -86,7 +88,8 @@ public class CoolAdapter extends BaseExpandableListAdapter {
 		ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
 		TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
 
-		txtTitle.setText(filteredList.get(groupPosition).getTitle());
+		txtTitle.setText(currentSuperTopic.getTitle());
+		imgIcon.setImageResource(currentSuperTopic.getDrawableId());
 
 		return convertView;
 	}
