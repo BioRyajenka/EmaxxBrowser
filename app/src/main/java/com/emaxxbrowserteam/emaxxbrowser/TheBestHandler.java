@@ -12,18 +12,21 @@ public class TheBestHandler extends Handler {
     public TheBestHandler() {
         super(Looper.getMainLooper());
         Log.d("Handler.java", "created");
+        balance = 0;
     }
+
+    private int balance;
 
     @Override
     public void handleMessage(Message message) {
         Log.e("Handler.java", "Message received! " + message.what);
-        switch (message.what) {
+        balance += message.what * 2 - 1;
+        switch (balance) {
             case 0:
-                MainActivity.pd.show();
-                break;
-            case 1:
                 MainActivity.pd.dismiss();
                 break;
+            default:
+                MainActivity.pd.show();
         }
     }
 }
