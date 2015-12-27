@@ -8,43 +8,48 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.emaxxbrowserteam.emaxxbrowser.model.Algorithm;
 import com.emaxxbrowserteam.emaxxbrowser.model.SuperTopic;
 import com.emaxxbrowserteam.emaxxbrowser.model.Topic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CoolAdapter extends BaseExpandableListAdapter {
 
 	public List<SuperTopic> getSuperTopics() {
-		return superTopics;
+		return originalList;
 	}
 
-	private List<SuperTopic> superTopics;
+    private List<SuperTopic> originalList;
+    private List<SuperTopic> filteredList;
 	private Context mContext;
 
 	public CoolAdapter(Context context, List<SuperTopic> groups) {
 		mContext = context;
-		superTopics = groups;
+        originalList = groups;
+        filteredList = new ArrayList<>();
+        filterData("");
 	}
 
 	@Override
 	public int getGroupCount() {
-		return superTopics.size();
+		return filteredList.size();
 	}
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		return superTopics.get(groupPosition).getTopicsCount();
+		return filteredList.get(groupPosition).getTopicsCount();
 	}
 
 	@Override
 	public Object getGroup(int groupPosition) {
-		return superTopics.get(groupPosition).getTitle();
+		return filteredList.get(groupPosition).getTitle();
 	}
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		return superTopics.get(groupPosition).getTopic(childPosition).getTitle();
+		return filteredList.get(groupPosition).getTopic(childPosition).getTitle();
 	}
 
 	@Override
@@ -81,7 +86,7 @@ public class CoolAdapter extends BaseExpandableListAdapter {
 		ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
 		TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
 
-		txtTitle.setText(superTopics.get(groupPosition).getTitle());
+		txtTitle.setText(filteredList.get(groupPosition).getTitle());
 
 		return convertView;
 	}
@@ -95,7 +100,7 @@ public class CoolAdapter extends BaseExpandableListAdapter {
 			convertView = inflater.inflate(R.layout.child_view, null);
 		}
 
-        Topic topic = superTopics.get(groupPosition).getTopic(childPosition);
+        Topic topic = filteredList.get(groupPosition).getTopic(childPosition);
 
         convertView.setTag(topic);
 
@@ -109,4 +114,29 @@ public class CoolAdapter extends BaseExpandableListAdapter {
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return true;
 	}
+
+	public void filterData(String query) {
+        query = query.toLowerCase();
+        filteredList.clear();
+        if (query.equals("")) {
+            filteredList.addAll(originalList);
+        } else {
+            for (SuperTopic st : originalList) {
+                SuperTopic nst = new SuperTopic(st.getTitle());
+                for (Topic t : st.topics) {
+                    boolean ok = false;
+                    for (Algorithm a : t.algorithms) {
+                        ok |= (a.getTitle().contains(query));
+                    }
+                    if (ok) {
+                        nst.add(t);
+                    }
+                }
+                if (!nst.isEmpty()) {
+                    filteredList.add(nst);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
 }

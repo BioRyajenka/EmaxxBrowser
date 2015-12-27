@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -17,6 +18,8 @@ import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emaxxbrowserteam.emaxxbrowser.loader.DownloadTask;
@@ -32,11 +35,13 @@ import org.jsoup.nodes.Document;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements
+        SearchView.OnQueryTextListener, SearchView.OnCloseListener{
 
     private DrawerLayout mDrawerLayout;
     private ExpandableListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    private CoolAdapter adapter;
 
     private DownloadTask superTopicTask;
 
@@ -61,8 +66,17 @@ public class MainActivity extends Activity {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ExpandableListView) findViewById(R.id.list_slidermenu);
-
         mDrawerList.setOnChildClickListener(new SlideMenuChildClickListener());
+
+        View header = getLayoutInflater().inflate(R.layout.searchbar, null);
+        SearchView sv = (SearchView) header.findViewById(R.id.searchView);
+        TextView tv = (TextView) sv.findViewById(sv.getContext().getResources().getIdentifier("android:id/search_src_text", null, null));
+        tv.setTextColor(Color.WHITE);
+        sv.setIconified(false);
+        sv.setIconifiedByDefault(false);
+        sv.setOnQueryTextListener(this);
+        sv.setOnCloseListener(this);
+        mDrawerList.addHeaderView(header);
 
         // enabling action bar app icon and behaving it as toggle button
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -129,6 +143,37 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void expandAll() {
+        int count = adapter.getGroupCount();
+        for (int i = 0; i < count; i++){
+            mDrawerList.expandGroup(i);
+        }
+    }
+
+    @Override
+    public boolean onClose() {
+        Log.d(TAG, "onClose");
+        adapter.filterData("");
+        expandAll();
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        Log.d(TAG, "onQTC: " + query);
+        adapter.filterData(query);
+        expandAll();
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        Log.d(TAG, "onQTS: " + query);
+        adapter.filterData(query);
+        expandAll();
+        return false;
+    }
+
     private class RetainInstance {
         public DownloadTask downloadTask;
         public List<SuperTopic> superTopics;
@@ -152,7 +197,7 @@ public class MainActivity extends Activity {
     private void updateSuperTopics(List<SuperTopic> groups) {
         this.groups = groups;
         Log.d(TAG, "finished fetching groups");
-        ExpandableListAdapter adapter = new CoolAdapter(getApplicationContext(), groups);
+        adapter = new CoolAdapter(getApplicationContext(), groups);
         Log.d(TAG, "finished creating adapter groups");
         mDrawerList.setAdapter(adapter);
         Log.d(TAG, "adapter assigned");
