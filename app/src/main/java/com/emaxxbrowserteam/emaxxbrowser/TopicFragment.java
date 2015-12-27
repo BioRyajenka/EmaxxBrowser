@@ -42,8 +42,8 @@ public class TopicFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_topic, container, false);
 
         LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.topicLinearLayout);
-        TextView textView = (TextView) rootView.findViewById(R.id.textLabel);
-        textView.setText(topic.getTitle() + " desc");
+//        TextView textView = (TextView) rootView.findViewById(R.id.textLabel);
+//        textView.setText(topic.getTitle() + " desc");
         Log.d(TAG, "act is " + getActivity());
         Log.d(TAG, "bar is " + getActivity().getActionBar());
         getActivity().getActionBar().setTitle(topic.getTitle());

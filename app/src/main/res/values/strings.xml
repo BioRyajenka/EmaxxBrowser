@@ -6,5 +6,7 @@
     
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
+    <string name="please_be_patient">Please me patient</string>
+    <string name="loading">Loading</string>
 
 </resources>
