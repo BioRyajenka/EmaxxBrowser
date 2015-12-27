@@ -16,6 +16,6 @@
         android:title="Clear cache"/>
     <Preference
         android:key="@string/pref_upload_all"
-        android:summary="For using offline"
+        android:summary="Warning! It may crash e-maxx.ru!"
         android:title="Upload all pages"/>
 </PreferenceScreen>

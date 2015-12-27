@@ -30,6 +30,10 @@ public class SettingsActivity extends PreferenceActivity {
         button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
+                FileUtils.clearCache(SettingsActivity.this.getCacheDir());
+                Intent i = new Intent(SettingsActivity.this, MainActivity.class);
+                i.putExtra(getString(R.string.refresh_all_extra), true);
+                SettingsActivity.this.startActivity(i);
                 return true;
             }
         });

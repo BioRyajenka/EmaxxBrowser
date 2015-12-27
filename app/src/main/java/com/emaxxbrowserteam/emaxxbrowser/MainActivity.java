@@ -89,8 +89,9 @@ public class MainActivity extends Activity {
 
         if (savedInstanceState == null) {
             Log.w(TAG, "saved instanse is null");
+            final boolean refreshAll = getIntent().getBooleanExtra(getString(R.string
+                    .refresh_all_extra), false);
 
-            Intent intent = getIntent();
             fragmentStack = new ArrayList();
             fragmentStack.add(null);
             showWelcomeFragment();
@@ -98,6 +99,20 @@ public class MainActivity extends Activity {
                 @Override
                 public void listen(Document document) {
                     updateSuperTopics(Parser.parse(MainActivity.this, document));
+                    if (refreshAll) {
+                        for (SuperTopic st : groups) {
+                            for (Topic t : st.topics) {
+                                for (Algorithm a : t.algorithms) {
+                                    a.loadHtml(new IListener() {
+                                        @Override
+                                        public void listen(Document document) {
+
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
                 }
             });
             superTopicTask.execute(FileUtils.getURL(Parser.E_MAXX_ALGO_URL));
