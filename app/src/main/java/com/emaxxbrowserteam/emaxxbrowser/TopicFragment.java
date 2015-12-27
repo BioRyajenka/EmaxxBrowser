@@ -1,6 +1,5 @@
 package com.emaxxbrowserteam.emaxxbrowser;
 
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.emaxxbrowserteam.emaxxbrowser.model.Algorithm;
 import com.emaxxbrowserteam.emaxxbrowser.model.Topic;
@@ -64,7 +62,6 @@ public class TopicFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "Clicked " + fi);
-                    Toast.makeText(getActivity(), "kek " + fi, Toast.LENGTH_SHORT);
                     ((MainActivity)getActivity()).replaceFragment(AlgorithmFragment.newInstance(algorithm));
                 }
             });

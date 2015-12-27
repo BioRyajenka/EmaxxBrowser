@@ -8,6 +8,9 @@ import com.emaxxbrowserteam.emaxxbrowser.loader.DownloadTask;
 import com.emaxxbrowserteam.emaxxbrowser.loader.FileUtils;
 import com.emaxxbrowserteam.emaxxbrowser.loader.IListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Algorithm implements Parcelable {
 
     private MainActivity activity;
@@ -22,6 +25,10 @@ public class Algorithm implements Parcelable {
         this.activity = activity;
         this.title = title;
         this.url = url;
+    }
+
+    public String getNameInCache() {
+        return url.substring(url.lastIndexOf('/') + 1);
     }
 
     public void loadHtml(IListener listener) {
