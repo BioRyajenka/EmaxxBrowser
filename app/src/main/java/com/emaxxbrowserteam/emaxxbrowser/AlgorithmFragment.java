@@ -66,7 +66,7 @@ public class AlgorithmFragment extends Fragment {
         while (it.hasNext()) {
             Element a = it.next();
             String html = a.html();
-            a.html(html.replace("\t", "&nbsp;&nbsp;&nbsp;"));
+            a.html(html.replace("\t", "&nbsp;&nbsp;"));
         }
 
         doc.head().append("<link rel=\"stylesheet\" type=\"text/css\" " + "href=\"style" +
