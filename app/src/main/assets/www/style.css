@@ -1,7 +1,6 @@
 body {
   height: 100%;
-  width: 100%;
-  pointer-events: none;
+  width: 90%;
 }
 div.container {
   overflow: hidden!important;
@@ -13,7 +12,7 @@ p.formula {
 	color: #000000;
 	padding: 5px 10px;
 }
-div.expandable {
+a.expandable {
 	text-decoration: none;
   display: block;
   padding: 3px 12px 3px 8px;
@@ -21,7 +20,7 @@ div.expandable {
   color: #fff;
   border: 1px solid #ddd;
 }
-div.expandable:active{
+a.expandable:active{
 	padding: 2px 13px 4px 7px;
   background-color: #444;
   color: #eee;
