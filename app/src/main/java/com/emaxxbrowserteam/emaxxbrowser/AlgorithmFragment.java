@@ -62,6 +62,13 @@ public class AlgorithmFragment extends Fragment {
             }
         }
 
+        it = doc.select("pre").listIterator();
+        while (it.hasNext()) {
+            Element a = it.next();
+            String html = a.html();
+            a.html(html.replace("\t", "&nbsp;&nbsp;&nbsp;"));
+        }
+
         doc.head().append("<link rel=\"stylesheet\" type=\"text/css\" " + "href=\"style" +
                 ".css\" />");
         doc.head().append("<script type=\"text/javascript\" src=\"script.js\">");
@@ -75,11 +82,6 @@ public class AlgorithmFragment extends Fragment {
         ListIterator<Node> it2 = doc.select(".content").first().childNodes().listIterator();
 
         int divId = 0;
-
-        /*while (it2.hasNext()) {
-            Node h = it2.next();
-            Log.d(TAG, "name: " + h.nodeName() + ", doc: " + h.toString());
-        }*/
 
         LinkedList<Node> list = new LinkedList<>();
         Node h = it2.next();
@@ -142,7 +144,7 @@ public class AlgorithmFragment extends Fragment {
         wv.setWebViewClient(new WebViewClient() {
             private boolean flag = false;
 
-            @Override
+            /*@Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 Log.e(TAG, "WebView error(" + error.getErrorCode() + "): " + error.getDescription());
             }
@@ -150,7 +152,7 @@ public class AlgorithmFragment extends Fragment {
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
                 Log.e(TAG, "WebView http error(" + errorResponse.getStatusCode() + ")");
-            }
+            }*/
 
             public void onPageFinished(WebView view, String url) {
                 Log.d(TAG, "onPageFinished: " + url);
