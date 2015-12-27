@@ -12,5 +12,7 @@
     <string name="action_reload">Reload page</string>
     <string name="action_settings">Settings</string>
     <string name="action_about">About</string>
+    <string name="pref_upload_all">pref_upload_all</string>
+    <string name="pref_clear_cache">pref_clear_cache</string>
 
 </resources>

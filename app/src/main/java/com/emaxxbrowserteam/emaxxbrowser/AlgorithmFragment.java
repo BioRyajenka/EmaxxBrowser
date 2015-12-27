@@ -1,15 +1,15 @@
 package com.emaxxbrowserteam.emaxxbrowser;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -20,10 +20,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.ListIterator;
 
 /**
@@ -95,7 +93,6 @@ public class AlgorithmFragment extends Fragment {
             h = it3.next();
         }
         while (it3.hasNext()) {
-            Log.d(TAG, "processing h " + h.toString());
             div = doc.createElement("div");
             div.attr("id", "div" + divId);
             div.attr("style", "display: none;");
@@ -103,7 +100,6 @@ public class AlgorithmFragment extends Fragment {
             Node ne = null;
             while (it3.hasNext()) {
                 ne = it3.next();
-                Log.d(TAG, "Found " + ne.nodeName() + " " + ne.toString());
                 if (ne.nodeName().equalsIgnoreCase("h2")) break;
                 div.appendChild(ne);
             }
@@ -121,13 +117,15 @@ public class AlgorithmFragment extends Fragment {
         return doc.outerHtml();
     }
 
+    static int id = 0;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
         Algorithm algorithm = getArguments().getParcelable("algorithm");
-        Log.d(TAG, "ocv: algorithm is " + algorithm);
 
+        id++;
         View rootView = inflater.inflate(R.layout.fragment_algorithm, container, false);
         getActivity().getActionBar().setTitle(algorithm.getTitle());
 
@@ -141,36 +139,47 @@ public class AlgorithmFragment extends Fragment {
         wv.getSettings().setBuiltInZoomControls(true);
         wv.getSettings().setSupportZoom(false);
 
+        final String homeUrl = "file:///android_asset/www/";
+
         wv.setWebViewClient(new WebViewClient() {
-            private boolean flag = false;
-
-            /*@Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                Log.e(TAG, "WebView error(" + error.getErrorCode() + "): " + error.getDescription());
-            }
-
             @Override
-            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-                Log.e(TAG, "WebView http error(" + errorResponse.getStatusCode() + ")");
-            }*/
-
-            public void onPageFinished(WebView view, String url) {
-                Log.d(TAG, "onPageFinished: " + url);
-                if (url.endsWith("#")) {
-                    wv.loadUrl(url);
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Log.d(TAG, "" + id + "onPageFinished: " + url);
+                if (url.equals(homeUrl)) {
+                    return true;
                 }
+                if (url.startsWith(homeUrl)) {
+                    String aurl = url.substring(homeUrl.length());
+                    Activity act = AlgorithmFragment.this.getActivity();
+                    if (act == null) return true;
+                    AlgorithmFragment.this.activity.showAlgorithmFragment(aurl);
+                } else {
+                    Log.d(TAG, "Intent");
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                }
+                return true;
             }
         });
 
         algorithm.loadHtml(new IListener() {
             @Override
             public void listen(Document document) {
-                wv.loadDataWithBaseURL("file:///android_asset/www/",
+                wv.loadDataWithBaseURL(homeUrl,
                         decorateHtml(document), "text/html", "utf-8", null);
             }
         });
 
         return rootView;
+    }
+
+    private MainActivity activity;
+
+    @Override
+    public void onAttach(Activity activity) {
+        this.activity = (MainActivity)activity;
+        super.onAttach(activity);
     }
 
     private static String TAG = "AlgorithmFragment.java";

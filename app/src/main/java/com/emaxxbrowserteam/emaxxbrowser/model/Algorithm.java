@@ -4,13 +4,9 @@ import android.app.Activity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.emaxxbrowserteam.emaxxbrowser.MainActivity;
 import com.emaxxbrowserteam.emaxxbrowser.loader.DownloadTask;
 import com.emaxxbrowserteam.emaxxbrowser.loader.FileUtils;
 import com.emaxxbrowserteam.emaxxbrowser.loader.IListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Algorithm implements Parcelable {
 
@@ -20,6 +16,10 @@ public class Algorithm implements Parcelable {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public Algorithm(Activity activity, String title, String url) {

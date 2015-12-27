@@ -11,11 +11,11 @@
         android:title="Address">
     </EditTextPreference-->
     <Preference
-        android:key="pref_clear_cache"
+        android:key="@string/pref_clear_cache"
         android:summary="And reload titles"
         android:title="Clear cache"/>
     <Preference
-        android:key="pref_upload_all"
+        android:key="@string/pref_upload_all"
         android:summary="For using offline"
         android:title="Upload all pages"/>
 </PreferenceScreen>

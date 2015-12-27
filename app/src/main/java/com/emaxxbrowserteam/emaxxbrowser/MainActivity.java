@@ -5,11 +5,9 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -19,7 +17,6 @@ import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emaxxbrowserteam.emaxxbrowser.loader.DownloadTask;
@@ -92,6 +89,8 @@ public class MainActivity extends Activity {
 
         if (savedInstanceState == null) {
             Log.w(TAG, "saved instanse is null");
+
+            Intent intent = getIntent();
             fragmentStack = new ArrayList();
             fragmentStack.add(null);
             showWelcomeFragment();
@@ -192,7 +191,7 @@ public class MainActivity extends Activity {
                                     int childPosition, long id) {
             getActionBar().setTitle("selected " + groupPosition + ", " + childPosition);
             mDrawerLayout.closeDrawer(mDrawerList);
-            showThemeFragment((Topic) v.getTag());
+            showTopicFragment((Topic) v.getTag());
             return true;
         }
     }
@@ -248,11 +247,25 @@ public class MainActivity extends Activity {
         replaceFragment(new WelcomeFragment());
     }
 
-    private void showThemeFragment(Topic topic) {
+    private void showTopicFragment(Topic topic) {
         replaceFragment(TopicFragment.newInstance(topic));
     }
 
+    public void showAlgorithmFragment(String url) {
+        for (SuperTopic st : groups) {
+            for (Topic t : st.topics) {
+                for (Algorithm a : t.algorithms) {
+                    if (a.getUrl().endsWith(url)) {
+                        replaceFragment(AlgorithmFragment.newInstance(a));
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
     public void replaceFragment(Fragment fragment) {
+        Log.d(TAG, "replacing fragment");
         if (fragment == null) {
             Log.e(TAG, "Error replacing fragment. It's null.");
             return;
