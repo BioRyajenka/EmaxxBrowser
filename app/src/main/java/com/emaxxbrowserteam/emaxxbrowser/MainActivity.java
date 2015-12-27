@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.SearchView;
@@ -62,8 +61,6 @@ public class MainActivity extends Activity implements
         pd.setCancelable(false);
         pd.setCanceledOnTouchOutside(false);
 
-        handler = new TheBestHandler();
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ExpandableListView) findViewById(R.id.list_slidermenu);
         mDrawerList.setOnChildClickListener(new SlideMenuChildClickListener());
@@ -102,6 +99,9 @@ public class MainActivity extends Activity implements
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
+
+            handler = new TheBestHandler();
+
             Log.w(TAG, "saved instanse is null");
             final boolean refreshAll = getIntent().getBooleanExtra(getString(R.string
                     .refresh_all_extra), false);
@@ -111,15 +111,17 @@ public class MainActivity extends Activity implements
             showWelcomeFragment();
             superTopicTask = new DownloadTask("", this, new IListener() {
                 @Override
-                public void listen(Document document) {
-                    updateSuperTopics(Parser.parse(MainActivity.this, document));
+                public void listen(Object... params) {
+                    Document document = (Document) params[0];
+                    MainActivity activity = (MainActivity) params[1];
+                    activity.updateSuperTopics(Parser.parse(activity, document));
                     if (refreshAll) {
                         for (SuperTopic st : groups) {
                             for (Topic t : st.topics) {
                                 for (Algorithm a : t.algorithms) {
                                     a.loadHtml(new IListener() {
                                         @Override
-                                        public void listen(Document document) {
+                                        public void listen(Object... params) {
 
                                         }
                                     });
@@ -134,11 +136,17 @@ public class MainActivity extends Activity implements
             Log.w(TAG, "saved instanse is not null");
             RetainInstance retainInstance = (RetainInstance)
                     getLastNonConfigurationInstance();
+
+            handler = retainInstance.handler;
+            groups = retainInstance.superTopics;
+
             fragmentStack = retainInstance.fragmentStack;
             superTopicTask = retainInstance.downloadTask;
-            if (retainInstance.superTopics != null) {
+            superTopicTask.attachActivity(this);
+            Log.w(TAG, "download task = " + superTopicTask);
+            if (groups != null) {
                 Log.w(TAG, "show super topics");
-                updateSuperTopics(retainInstance.superTopics);
+                updateSuperTopics(groups);
             }
         }
     }
@@ -178,12 +186,14 @@ public class MainActivity extends Activity implements
         public DownloadTask downloadTask;
         public List<SuperTopic> superTopics;
         public ArrayList fragmentStack;
+        public Handler handler;
 
         public RetainInstance(DownloadTask downloadTask, List<SuperTopic> superTopics,
-                              ArrayList fragmentStack) {
+                              ArrayList fragmentStack, Handler handler) {
             this.downloadTask = downloadTask;
             this.superTopics = superTopics;
             this.fragmentStack = fragmentStack;
+            this.handler = handler;
         }
     }
 
@@ -191,7 +201,7 @@ public class MainActivity extends Activity implements
     public Object onRetainNonConfigurationInstance() {
         Log.w(TAG, "on retain: super topic task = " + (superTopicTask == null ? "null" :
                 "not null") + ", " + "list = " + String.valueOf(groups));
-        return new RetainInstance(superTopicTask, groups, fragmentStack);
+        return new RetainInstance(superTopicTask, groups, fragmentStack, handler);
     }
 
     private void updateSuperTopics(List<SuperTopic> groups) {

@@ -172,7 +172,8 @@ public class AlgorithmFragment extends Fragment {
 
         algorithm.loadHtml(new IListener() {
             @Override
-            public void listen(Document document) {
+            public void listen(Object... params) {
+                Document document = (Document) params[0];
                 wv.loadDataWithBaseURL(homeUrl,
                         decorateHtml(document), "text/html", "utf-8", null);
             }
