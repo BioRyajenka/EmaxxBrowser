@@ -29,10 +29,10 @@ import com.emaxxbrowserteam.emaxxbrowser.model.Topic;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class MainActivity extends Activity {
+
     private DrawerLayout mDrawerLayout;
     private ExpandableListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -51,8 +51,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         pd = new ProgressDialog(this);
-        pd.setTitle("Loading");
-        pd.setMessage("Please be patient");
+        pd.setTitle(R.string.loading);
+        pd.setMessage(getResources().getString(R.string.please_be_patient));
         pd.setCancelable(false);
         pd.setCanceledOnTouchOutside(false);
 
@@ -125,15 +125,7 @@ public class MainActivity extends Activity {
 
     @Override
     public Object onRetainNonConfigurationInstance() {
-//        List<SuperTopic> list = null;
-//        if (mDrawerList.getAdapter() instanceof CoolAdapter) {
-//            Log.w(TAG, "m drawer list instance if cool adapter");
-//            CoolAdapter coolAdapter = (CoolAdapter) mDrawerList.getAdapter();
-//            if (coolAdapter != null) {
-//                list = coolAdapter.getSuperTopics();
-//            }
-//        }
-        Log.w(TAG, "super topic task = " + (superTopicTask == null ? "null" : "not null") + ", " + "list = " + String.valueOf(groups));
+        Log.w(TAG, "on retain: super topic task = " + (superTopicTask == null ? "null" : "not null") + ", " + "list = " + String.valueOf(groups));
         return new RetainInstance(superTopicTask, groups, fragmentStack);
     }
 
