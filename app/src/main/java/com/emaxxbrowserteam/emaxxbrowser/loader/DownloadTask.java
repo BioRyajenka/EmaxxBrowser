@@ -15,11 +15,14 @@ import java.net.URL;
 
 public class DownloadTask extends AsyncTask<URL, Void, Document> {
 
-    public DownloadTask(MainActivity activity, IListener listener) {
+    public DownloadTask(String fileNamePrefix, MainActivity activity, IListener listener) {
+        Log.e(TAG, "filename prefix = " + fileNamePrefix);
+        this.fileNamePrefix = fileNamePrefix;
         this.listener = listener;
         this.activity = activity;
     }
 
+    protected final String fileNamePrefix;
     protected IListener listener;
     protected MainActivity activity;
     protected Document document;
@@ -27,7 +30,7 @@ public class DownloadTask extends AsyncTask<URL, Void, Document> {
     @Override
     protected Document doInBackground(URL... params) {
         URL url = params[0];
-        String name = url.toString().substring(1 + url.toString().lastIndexOf('/'));
+        String name = fileNamePrefix + url.toString().substring(1 + url.toString().lastIndexOf('/'));
         Log.e(TAG, "name = " + name);
         File cacheDir = activity.getCacheDir();
         File savedPage = new File(cacheDir, name);
@@ -37,7 +40,7 @@ public class DownloadTask extends AsyncTask<URL, Void, Document> {
             return document;
         }
         Log.e(TAG, "start downloading");
-        document = FileUtils.downloadHtmlAndSave(cacheDir, url, savedPage);
+        document = FileUtils.downloadHtmlAndSave(fileNamePrefix, cacheDir, url, savedPage);
         Log.e(TAG, "downloaded");
         return document;
     }
