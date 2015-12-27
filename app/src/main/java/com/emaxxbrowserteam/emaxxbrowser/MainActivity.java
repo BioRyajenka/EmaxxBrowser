@@ -1,8 +1,5 @@
 package com.emaxxbrowserteam.emaxxbrowser;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -120,6 +117,12 @@ public class MainActivity extends Activity {
         Log.d(TAG, "finished creating adapter groups");
         mDrawerList.setAdapter(adapter);
         Log.d(TAG, "adapter assigned");
+    }
+
+    public void buttononclick(View v) {
+        if (v != null && v.getId() == R.id.button) {
+            FileUtils.clearCache(getCacheDir());
+        }
     }
 
     private class SlideMenuChildClickListener implements OnChildClickListener {

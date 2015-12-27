@@ -1,6 +1,7 @@
 package com.emaxxbrowserteam.emaxxbrowser;
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -16,14 +17,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.File;
+import java.util.ListIterator;
 
 /**
  * Created by Jackson on 26.12.2015.
  */
 public class AlgorithmFragment extends Fragment {
-    public static String temp;
-
     @Deprecated
     public AlgorithmFragment() {
     }
@@ -46,12 +45,34 @@ public class AlgorithmFragment extends Fragment {
         doc.select("#disqus_thread").remove();
         doc.head().append("<link rel=\"stylesheet\" type=\"text/css\" " + "href=\"style" +
                 ".css\" />");
+        doc.head().append("<script type=\"text/javascript\" src=\"script.js\">");
 
         Element e = doc.select(".main").first();
         Element div = doc.createElement("div");
+        div.addClass("container");
         e.replaceWith(div);
         div.appendChild(e);
-        div.addClass("container");
+
+        ListIterator<Element> it = doc.select("h1").listIterator();
+        int divId = 0;
+        while (it.hasNext()) {
+            Element h = it.next();
+            div = doc.createElement("div");
+            div.addClass("expandable");
+            div.attr("id", "div" + divId);
+
+            e = h.nextElementSibling();
+            while (e != null && !e.tagName().equalsIgnoreCase("h1")) {
+                div.appendChild(e);
+                //h.remove();
+            }
+            Element a = doc.createElement("a");
+            a.attr("href", "#").attr("onclick", "swap('div" + divId + "');return false;");
+            h.replaceWith(a);
+            a.after(div);
+
+            divId++;
+        }
         return doc.outerHtml();
     }
 
@@ -77,24 +98,8 @@ public class AlgorithmFragment extends Fragment {
         algorithm.loadHtml(new IListener() {
             @Override
             public void listen(Document document) {
-                //wv.loadDataWithBaseURL(getActivity().getCacheDir().getAbsolutePath(),
-                // decorateHtml(document), "text/html", "utf-8",
-                //        null);
-                String dir = getActivity().getExternalCacheDir() + "/";
-                //Log.e(TAG, "dir: " + getActivity().getCacheDir().getAbsolutePath());
-                //Log.e(TAG, "edir: " + getActivity().getExternalCacheDir());
-                //Log.e(TAG, "efdir: " + getActivity().getExternalFilesDir(null));
-                //String path = "file://" + dir + temp;
-                //Log.e(TAG, "path: " + path);
-
-                //for (File f : getActivity().getExternalFilesDir(null).listFiles()) {
-                //    Log.e(TAG, "file: " + f);
-                //}
-
-                
-
-                wv.loadDataWithBaseURL(dir, "<html> <body> <img src=\"" + temp + "\">  " +
-                        "</img> </body> </html> ", "text/html", "utf-8", null);
+                wv.loadDataWithBaseURL("file:///android_asset/www/",
+                        decorateHtml(document), "text/html", "utf-8", null);
             }
         });
 
