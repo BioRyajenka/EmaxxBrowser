@@ -2,6 +2,8 @@ package com.emaxxbrowserteam.emaxxbrowser.loader;
 
 import android.util.Log;
 
+import com.emaxxbrowserteam.emaxxbrowser.model.Topic;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,6 +12,7 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -62,13 +65,13 @@ public final class FileUtils {
         }
     }
 
-    public static void writeDocument(File cacheDir, File file, Document text) {
+    public static void writeDocument(String fileNamePrefix, File cacheDir, File file, Document text) {
         Log.e(TAG, "write document");
         Elements imageElements = text.getElementsByClass("tex");
         for (Element imageElement : imageElements) {
             String attr = imageElement.attr("src");
             String link = Parser.E_MAXX_URL + attr.substring(2);
-            String cacheFileName = link.substring(link.lastIndexOf('/') + 1).replace(".png", "");
+            String cacheFileName = fileNamePrefix + link.substring(link.lastIndexOf('/') + 1).replace(".png", "");
             File cacheFile = new File(cacheDir, cacheFileName);
             if (link.endsWith(".png")) {
                 Log.d(TAG, "cfn: " + cacheFileName);
@@ -127,7 +130,7 @@ public final class FileUtils {
         }
     }
 
-    public static Document downloadHtmlAndSave(File cacheDir, URL url, File cache) {
+    public static Document downloadHtmlAndSave(String fileNamePrefix, File cacheDir, URL url, File cache) {
         Document document = downloadHtml(url);
         Log.e(TAG, "downloaded");
         if (document != null) {
@@ -140,7 +143,7 @@ public final class FileUtils {
             }
             Log.e(TAG, "    ok, not null, start make cache in file " + cache.getName());
             if (cache.exists()) {
-                writeDocument(cacheDir, cache, document);
+                writeDocument(fileNamePrefix, cacheDir, cache, document);
             }
         }
         return document;
@@ -153,6 +156,18 @@ public final class FileUtils {
 
     public static void clearCache(File cacheDir) {
         for (File file : cacheDir.listFiles()) {
+            file.delete();
+        }
+    }
+
+    public static void clearTopicCache(File cacheDir, Topic topic) {
+        final String title = topic.getTitle();
+        for (File file : cacheDir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String filename) {
+                return filename.startsWith(title);
+            }
+        })) {
             file.delete();
         }
     }

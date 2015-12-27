@@ -90,7 +90,7 @@ public class MainActivity extends Activity {
             fragmentStack = new ArrayList();
             fragmentStack.add(null);
             showWelcomeFragment();
-            superTopicTask = new DownloadTask(this, new IListener() {
+            superTopicTask = new DownloadTask("", this, new IListener() {
                 @Override
                 public void listen(Document document) {
                     updateSuperTopics(Parser.parse(MainActivity.this, document));

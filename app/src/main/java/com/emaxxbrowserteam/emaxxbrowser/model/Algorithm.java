@@ -32,7 +32,7 @@ public class Algorithm implements Parcelable {
     }
 
     public void loadHtml(IListener listener) {
-        DownloadTask task = new DownloadTask(activity, listener);
+        DownloadTask task = new DownloadTask(getNameInCache(), activity, listener);
         task.execute(FileUtils.getURL(url));
     }
 
