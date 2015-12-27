@@ -21,6 +21,10 @@ public class Algorithm implements Parcelable {
         return title;
     }
 
+    public String toString() {
+        return getTitle();
+    }
+
     public Algorithm(MainActivity activity, String title, String url) {
         this.activity = activity;
         this.title = title;
