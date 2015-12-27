@@ -2,6 +2,7 @@ package com.emaxxbrowserteam.emaxxbrowser.loader;
 
 import android.util.Log;
 
+import com.emaxxbrowserteam.emaxxbrowser.model.Algorithm;
 import com.emaxxbrowserteam.emaxxbrowser.model.Topic;
 
 import org.jsoup.Jsoup;
@@ -160,8 +161,8 @@ public final class FileUtils {
         }
     }
 
-    public static void clearTopicCache(File cacheDir, Topic topic) {
-        final String title = topic.getTitle();
+    public static void clearAlgorithmCache(File cacheDir, Algorithm algorithm) {
+        final String title = algorithm.getNameInCache();
         for (File file : cacheDir.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {
