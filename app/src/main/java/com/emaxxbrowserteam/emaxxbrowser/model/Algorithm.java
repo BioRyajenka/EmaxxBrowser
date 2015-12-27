@@ -28,6 +28,10 @@ public class Algorithm implements Parcelable {
         this.url = url;
     }
 
+    public String toString() {
+        return getTitle();
+    }
+
     public String getNameInCache() {
         return url.substring(url.lastIndexOf('/') + 1);
     }

@@ -1,5 +1,5 @@
 #TODO
-2) settings -> reload all, reload page, clear cache, изменить цветовую схему, about <br>
+2) settings -> upload all, reload page, clear cache, изменить цветовую схему, about <br>
 5) search field <br>
 6) иконки для superTopic <br>
 9) прокручивающийся список <br>
