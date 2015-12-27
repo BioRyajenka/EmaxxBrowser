@@ -207,10 +207,10 @@ public class MainActivity extends Activity {
         // Handle action bar actions click
         switch (item.getItemId()) {
             case R.id.action_reload:
-                Object cur = fragmentStack.get(fragmentStack.size() - 1);
-                FileUtils.clearAlgorithmCache(getCacheDir(), (Algorithm) cur);
+                final Algorithm alg = (Algorithm) fragmentStack.get(fragmentStack.size() - 1);
+                FileUtils.clearAlgorithmCache(getCacheDir(), alg);
                 Toast.makeText(this, "Cache cleared", Toast.LENGTH_SHORT).show();
-
+                replaceFragment(AlgorithmFragment.newInstance(alg));
                 return true;
             case R.id.action_settings:
                 Toast.makeText(this, "Kek", Toast.LENGTH_SHORT).show();
