@@ -1,5 +1,6 @@
 package com.emaxxbrowserteam.emaxxbrowser.loader;
 
+import android.app.Activity;
 import android.util.Log;
 
 import com.emaxxbrowserteam.emaxxbrowser.MainActivity;
@@ -28,7 +29,7 @@ public class Parser {
 
     public static Map<String, Algorithm> algorithmByNameInCache;
 
-    public static List<SuperTopic> parse(MainActivity activity, Document document) {
+    public static List<SuperTopic> parse(Activity activity, Document document) {
         algorithmByNameInCache = new HashMap<>();
         List<SuperTopic> superTopics = new ArrayList<>();
         Elements elements = document.getElementsByClass(CONTENT);

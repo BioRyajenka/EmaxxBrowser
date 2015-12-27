@@ -1,8 +1,7 @@
 #TODO
-2) settings -> upload all, reload page, clear cache, изменить цветовую схему, about <br>
+2) settings -> изменить цветовую схему<br>
 5) search field <br>
 6) иконки для superTopic <br>
-9) прокручивающийся список <br>
 11) при нажатии на ссылку открывает браузер <br>
 12) при неудачной загрузке страницы кнопка "try again" <br>
 14) текст обрезается <br>

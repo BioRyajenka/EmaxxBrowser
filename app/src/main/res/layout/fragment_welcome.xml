@@ -8,6 +8,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_centerHorizontal="true"
+<<<<<<< HEAD
         android:background="@color/counter_text_color">
 
         <Space
@@ -32,6 +33,15 @@
             android:src="@drawable/ic_nikolayev"
             android:layout_centerHorizontal="true"
             android:layout_weight="4"/>
+=======
+        android:onClick="buttononclick"/>
+    <TextView
+        android:id="@+id/tvInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="">
+    </TextView>
+>>>>>>> 0cc237b259ef6dc9b7ec006209590d5711f0ae3b
 
         <TextView
             android:layout_width="fill_parent"
