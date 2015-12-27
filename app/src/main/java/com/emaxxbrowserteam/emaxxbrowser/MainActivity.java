@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -16,6 +19,7 @@ import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emaxxbrowserteam.emaxxbrowser.loader.DownloadTask;
@@ -87,6 +91,7 @@ public class MainActivity extends Activity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
+            Log.w(TAG, "saved instanse is null");
             fragmentStack = new ArrayList();
             fragmentStack.add(null);
             showWelcomeFragment();
@@ -99,14 +104,14 @@ public class MainActivity extends Activity {
             superTopicTask.execute(FileUtils.getURL(Parser.E_MAXX_ALGO_URL));
         } else {
             Log.w(TAG, "saved instanse is not null");
-            RetainInstance retainInstance = (RetainInstance) getLastNonConfigurationInstance();
+            RetainInstance retainInstance = (RetainInstance)
+                    getLastNonConfigurationInstance();
             fragmentStack = retainInstance.fragmentStack;
             superTopicTask = retainInstance.downloadTask;
             if (retainInstance.superTopics != null) {
                 Log.w(TAG, "show super topics");
                 updateSuperTopics(retainInstance.superTopics);
             }
-            //TODO: saving superTopicTask
         }
     }
 
@@ -115,7 +120,8 @@ public class MainActivity extends Activity {
         public List<SuperTopic> superTopics;
         public ArrayList fragmentStack;
 
-        public RetainInstance(DownloadTask downloadTask, List<SuperTopic> superTopics, ArrayList fragmentStack) {
+        public RetainInstance(DownloadTask downloadTask, List<SuperTopic> superTopics,
+                              ArrayList fragmentStack) {
             this.downloadTask = downloadTask;
             this.superTopics = superTopics;
             this.fragmentStack = fragmentStack;
@@ -177,7 +183,7 @@ public class MainActivity extends Activity {
             }
             fragmentStack.remove(fragmentStack.size() - 1);
         }
-//        outStack();
+        //        outStack();
     }
 
     private class SlideMenuChildClickListener implements OnChildClickListener {
@@ -207,16 +213,14 @@ public class MainActivity extends Activity {
         // Handle action bar actions click
         switch (item.getItemId()) {
             case R.id.action_reload:
-                final Algorithm alg = (Algorithm) fragmentStack.get(fragmentStack.size() - 1);
+                final Algorithm alg = (Algorithm) fragmentStack.get(fragmentStack.size() -
+                        1);
                 FileUtils.clearAlgorithmCache(getCacheDir(), alg);
                 Toast.makeText(this, "Cache cleared", Toast.LENGTH_SHORT).show();
                 replaceFragment(AlgorithmFragment.newInstance(alg));
                 return true;
             case R.id.action_settings:
-                Toast.makeText(this, "Kek", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.action_about:
-                Toast.makeText(this, "Kek", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -232,7 +236,6 @@ public class MainActivity extends Activity {
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         menu.findItem(R.id.action_reload).setVisible(!drawerOpen);
         menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
-        menu.findItem(R.id.action_about).setVisible(!drawerOpen);
 
         Object cur = fragmentStack.get(fragmentStack.size() - 1);
         MenuItem item = menu.findItem(R.id.action_reload);
@@ -263,7 +266,7 @@ public class MainActivity extends Activity {
         } else {
             throw new AssertionError();
         }
-//        outStack();
+        //        outStack();
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
     }

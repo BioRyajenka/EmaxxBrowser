@@ -1,5 +1,6 @@
 package com.emaxxbrowserteam.emaxxbrowser.loader;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
@@ -15,7 +16,7 @@ import java.net.URL;
 
 public class DownloadTask extends AsyncTask<URL, Void, Document> {
 
-    public DownloadTask(String fileNamePrefix, MainActivity activity, IListener listener) {
+    public DownloadTask(String fileNamePrefix, Activity activity, IListener listener) {
         Log.e(TAG, "filename prefix = " + fileNamePrefix);
         this.fileNamePrefix = fileNamePrefix;
         this.listener = listener;
@@ -24,7 +25,7 @@ public class DownloadTask extends AsyncTask<URL, Void, Document> {
 
     protected final String fileNamePrefix;
     protected IListener listener;
-    protected MainActivity activity;
+    protected Activity activity;
     protected Document document;
 
     @Override

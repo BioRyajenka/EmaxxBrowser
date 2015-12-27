@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--CheckBoxPreference
+        android:key="notif"
+        android:summary="Enable notifications"
+        android:title="Notifications">
+    </CheckBoxPreference>
+    <EditTextPreference
+        android:key="address"
+        android:summary="Address for notifications"
+        android:title="Address">
+    </EditTextPreference-->
+    <Preference
+        android:key="pref_clear_cache"
+        android:summary="And reload titles"
+        android:title="Clear cache"/>
+    <Preference
+        android:key="pref_upload_all"
+        android:summary="For using offline"
+        android:title="Upload all pages"/>
+</PreferenceScreen>

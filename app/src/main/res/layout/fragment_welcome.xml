@@ -26,6 +26,12 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:onClick="buttononclick"/>
+    <TextView
+        android:id="@+id/tvInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="">
+    </TextView>
 
 
 </RelativeLayout>

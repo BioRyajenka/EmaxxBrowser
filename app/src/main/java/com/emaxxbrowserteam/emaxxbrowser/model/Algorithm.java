@@ -1,5 +1,6 @@
 package com.emaxxbrowserteam.emaxxbrowser.model;
 
+import android.app.Activity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class Algorithm implements Parcelable {
 
-    private MainActivity activity;
+    private Activity activity;
     private String url;
     private String title;
 
@@ -21,7 +22,7 @@ public class Algorithm implements Parcelable {
         return title;
     }
 
-    public Algorithm(MainActivity activity, String title, String url) {
+    public Algorithm(Activity activity, String title, String url) {
         this.activity = activity;
         this.title = title;
         this.url = url;
