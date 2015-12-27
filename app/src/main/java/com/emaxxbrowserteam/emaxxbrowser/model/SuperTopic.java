@@ -49,7 +49,7 @@ public class SuperTopic {
         if (id != null) {
             return id;
         }
-        return R.mipmap.ic_launcher;
+        return R.drawable.ic_photos;
     }
 
     private static Map<String, Integer> title2drawableId;
